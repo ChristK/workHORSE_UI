@@ -23,8 +23,8 @@ navbarPage(
 theme = shinytheme("paper"),
 title = "workHORSE",
 id = "inTabset",
-use_bs_tooltip(),
-use_bs_popover(),
+# use_bs_tooltip(),
+# use_bs_popover(),
 # Welcome tab --------------------------
 source(file.path("ui", "welcome_tab.R"),  local = TRUE)$value,
 
