@@ -73,18 +73,24 @@ output$cep1_1 <- output$cep1 <- renderPlotly({
   wtp_thres <- reactive(max_x * input$out_wtp_box)
   max_y <-  max(tt[, max(abs(net_cost_cml))] * 1.2, wtp_thres())
   trng_path <- paste0("M 0 0 L ",  max_x, " ", wtp_thres(), " L ", max_x, " 0 Z")
-
+  # AMANDINE pal <- input$color_select
+  mypal <- brewer.pal(9, "Greens")
+  
   p <-
     plot_ly(
       tt,
       x = ~ net_utility_cml,
       y = ~ net_cost_cml,
       color = ~ friendly_name,
+      # colorscale='Viridis',
+      # reversescale =T,
+      colors = mypal,
       # frame = ~ year,
       type = "scatter",
       mode = "markers",
       showlegend = TRUE
     )
+  suppressWarnings(print(p))
   p <-
     layout(
       p,
@@ -107,7 +113,7 @@ output$cep1_1 <- output$cep1 <- renderPlotly({
              y0 = max_y, y1 = -max_y, yref = "y")
         ))
 
-
+ 
   # p <- animation_opts(p, frame = 1000, redraw = FALSE)
   # p <- animation_slider(p,
   #                       currentvalue = list(prefix = "Year: ",

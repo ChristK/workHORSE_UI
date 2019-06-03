@@ -34,7 +34,13 @@ bsCollapsePanel(
         onLabel = "Yes",
         offLabel = "No",
         labelWidth = "100%"
-      )
+      ),
+      colorSelectorInput(
+        "col",
+        "Scenario's color",
+        "red"
+        
+        )
     ),
     column(
       4,

@@ -115,7 +115,6 @@ observeEvent(input[[paste0("run_simulation_sc", input$scenarios_number_slider)]]
   })
 
 
-
  # user_inputs <- reactive(reactiveValuesToList(input))
 
   source(file.path("server", "output_inputs.R"),  local = TRUE)$value
