@@ -73,8 +73,11 @@ output$cep1_1 <- output$cep1 <- renderPlotly({
   wtp_thres <- reactive(max_x * input$out_wtp_box)
   max_y <-  max(tt[, max(abs(net_cost_cml))] * 1.2, wtp_thres())
   trng_path <- paste0("M 0 0 L ",  max_x, " ", wtp_thres(), " L ", max_x, " 0 Z")
-  # AMANDINE pal <- input$color_select
-  mypal <- brewer.pal(9, "Greens")
+  pal <- c(input$col_sc1, input$col_sc2, input$col_sc3, input$col_sc4, input$col_sc5, input$col_sc6, input$col_sc7, input$col_sc8, input$col_sc9)
+  for (i in 1:input$scenarios_number_slider) {
+    mypal <- c(pal[1:i])
+  }
+ 
   
   p <-
     plot_ly(
@@ -82,15 +85,13 @@ output$cep1_1 <- output$cep1 <- renderPlotly({
       x = ~ net_utility_cml,
       y = ~ net_cost_cml,
       color = ~ friendly_name,
-      # colorscale='Viridis',
-      # reversescale =T,
       colors = mypal,
       # frame = ~ year,
       type = "scatter",
       mode = "markers",
       showlegend = TRUE
     )
-  suppressWarnings(print(p))
+ 
   p <-
     layout(
       p,
@@ -112,7 +113,7 @@ output$cep1_1 <- output$cep1 <- renderPlotly({
              x0 = 0, x1 = -max_x, xref = "x",
              y0 = max_y, y1 = -max_y, yref = "y")
         ))
-
+#suppressWarnings(print(p))
  
   # p <- animation_opts(p, frame = 1000, redraw = FALSE)
   # p <- animation_slider(p,
@@ -131,13 +132,18 @@ output$cep_anim <- renderPlotly({
   wtp_thres <- reactive(max_x * input$out_wtp_box)
   max_y <-  max(tt[, max(abs(net_cost_cml))] * 1.2, wtp_thres())
   trng_path <- paste0("M 0 0 L ",  max_x, " ", wtp_thres(), " L ", max_x, " 0 Z")
-
+  pal <- c(input$col_sc1, input$col_sc2, input$col_sc3, input$col_sc4, input$col_sc5, input$col_sc6, input$col_sc7, input$col_sc8, input$col_sc9)
+  for (i in 1:input$scenarios_number_slider) {
+    mypal <- c(pal[1:i])
+  }
+  
   p <-
     plot_ly(
       tt,
       x = ~ net_utility_cml,
       y = ~ net_cost_cml,
       color = ~ friendly_name,
+      colors = mypal,
       frame = ~ year,
       type = "scatter",
       mode = "markers",
@@ -176,9 +182,13 @@ output$cep_p_ce <- renderPlotly({
   tt <- out_proc()[, sum(nmb_cml), by = .(.id, friendly_name, year)
             ][, .(prop_if(V1 > 0)), by = .(friendly_name, year)
               ][, V2 := predict(loess(V1 ~ year)), by = friendly_name]
-
+  pal <- c(input$col_sc1, input$col_sc2, input$col_sc3, input$col_sc4, input$col_sc5, input$col_sc6, input$col_sc7, input$col_sc8, input$col_sc9)
+  for (i in 1:input$scenarios_number_slider) {
+    mypal <- c(pal[1:i])
+  }
+  
   plot_ly(tt,
-             x = ~year, y = ~V2, color = ~ friendly_name, type = 'scatter',
+             x = ~year, y = ~V2, color = ~ friendly_name, colors = mypal, type = 'scatter',
              mode = 'lines', line = list(shape = "spline", smoothing = 1.3)) %>%
   add_lines(y = 0.8, name = "Decision aid", color = NULL,
             line = list(color = "black", dash = "dot")) %>%
@@ -193,9 +203,13 @@ output$cep_p_cs <- renderPlotly({
   tt <- out_proc()[, sum(net_cost_cml), by = .(.id, friendly_name, year)
                    ][, .(prop_if(V1 <= 0)), by = .(friendly_name, year)
                      ][, V2 := predict(loess(V1 ~ year)), by = friendly_name]
-
+  pal <- c(input$col_sc1, input$col_sc2, input$col_sc3, input$col_sc4, input$col_sc5, input$col_sc6, input$col_sc7, input$col_sc8, input$col_sc9)
+  for (i in 1:input$scenarios_number_slider) {
+    mypal <- c(pal[1:i])
+  }
+  
   plot_ly(tt,
-          x = ~year, y = ~V2, color = ~ friendly_name, type = 'scatter',
+          x = ~year, y = ~V2, color = ~ friendly_name, colors = mypal, type = 'scatter',
           mode = 'lines', line = list(shape = "spline", smoothing = 1.3)) %>%
     add_lines(y = 0.8, name = "Decision aid", color = NULL,
               line = list(color = "black", dash = "dot")) %>%
@@ -215,13 +229,18 @@ output$equ1_1 <- output$equ1 <- renderPlotly({
   by = .(.id, friendly_name)]
   max_x <- tt[, max(abs(sei))] * 1.2
   max_y <- tt[, max(abs(nmb_cml))] * 1.2
-
+  pal <- c(input$col_sc1, input$col_sc2, input$col_sc3, input$col_sc4, input$col_sc5, input$col_sc6, input$col_sc7, input$col_sc8, input$col_sc9)
+  for (i in 1:input$scenarios_number_slider) {
+    mypal <- c(pal[1:i])
+  }
+  
   p <-
     plot_ly(
       tt,
       x = ~ sei,
       y = ~ nmb_cml,
       color = ~ friendly_name,
+      colors = mypal,
       # frame = ~ year,
       type = "scatter",
       mode = "markers",
@@ -261,13 +280,18 @@ output$equ_rel <- renderPlotly({
   by = .(.id, friendly_name)]
   max_x <- tt[, max(abs(rei))] * 1.2
   max_y <- tt[, max(abs(nmb_cml))] * 1.2
-
+  pal <- c(input$col_sc1, input$col_sc2, input$col_sc3, input$col_sc4, input$col_sc5, input$col_sc6, input$col_sc7, input$col_sc8, input$col_sc9)
+  for (i in 1:input$scenarios_number_slider) {
+    mypal <- c(pal[1:i])
+  }
+  
   p <-
     plot_ly(
       tt,
       x = ~ rei,
       y = ~ nmb_cml,
       color = ~ friendly_name,
+      colors = mypal,
       # frame = ~ year,
       type = "scatter",
       mode = "markers",
@@ -308,13 +332,18 @@ output$equ_anim_abs <- renderPlotly({
 
   max_x <- tt[, max(abs(sei))] * 1.2
   max_y <- tt[, max(abs(nmb_cml))] * 1.2
-
+  pal <- c(input$col_sc1, input$col_sc2, input$col_sc3, input$col_sc4, input$col_sc5, input$col_sc6, input$col_sc7, input$col_sc8, input$col_sc9)
+  for (i in 1:input$scenarios_number_slider) {
+    mypal <- c(pal[1:i])
+  }
+  
   p <-
     plot_ly(
       tt,
       x = ~ sei,
       y = ~ nmb_cml,
       color = ~ friendly_name,
+      colors = mypal,
       frame = ~ year,
       type = "scatter",
       mode = "markers",
@@ -354,13 +383,18 @@ output$equ_anim_rel <- renderPlotly({
 
   max_x <- tt[, max(abs(rei))] * 1.2
   max_y <- tt[, max(abs(nmb_cml))] * 1.2
-
+  pal <- c(input$col_sc1, input$col_sc2, input$col_sc3, input$col_sc4, input$col_sc5, input$col_sc6, input$col_sc7, input$col_sc8, input$col_sc9)
+  for (i in 1:input$scenarios_number_slider) {
+    mypal <- c(pal[1:i])
+  }
+  
   p <-
     plot_ly(
       tt,
       x = ~ rei,
       y = ~ nmb_cml,
       color = ~ friendly_name,
+      colors = mypal,
       frame = ~ year,
       type = "scatter",
       mode = "markers",
@@ -395,9 +429,13 @@ output$equ_p_abs <- renderPlotly({
   tt <- out_proc()[, mean(sei), by = .(.id, friendly_name, year)
                    ][, .(prop_if(V1 > 0)), by = .(friendly_name, year)
                      ][, V2 := predict(loess(V1 ~ year)), by = friendly_name]
-
+  pal <- c(input$col_sc1, input$col_sc2, input$col_sc3, input$col_sc4, input$col_sc5, input$col_sc6, input$col_sc7, input$col_sc8, input$col_sc9)
+  for (i in 1:input$scenarios_number_slider) {
+    mypal <- c(pal[1:i])
+  }
+  
   plot_ly(tt,
-          x = ~year, y = ~V2, color = ~ friendly_name, type = 'scatter',
+          x = ~year, y = ~V2, color = ~ friendly_name, colors = mypal, type = 'scatter',
           mode = 'lines', line = list(shape = "spline", smoothing = 1.3)) %>%
     add_lines(y = 0.8, name = "Decision aid", color = NULL,
               line = list(color = "black", dash = "dot")) %>%
@@ -412,9 +450,13 @@ output$equ_p_rel <- renderPlotly({
   tt <- out_proc()[, mean(rei), by = .(.id, friendly_name, year)
                    ][, .(prop_if(V1 <= 0)), by = .(friendly_name, year)
                      ][, V2 := predict(loess(V1 ~ year)), by = friendly_name]
-
+  pal <- c(input$col_sc1, input$col_sc2, input$col_sc3, input$col_sc4, input$col_sc5, input$col_sc6, input$col_sc7, input$col_sc8, input$col_sc9)
+  for (i in 1:input$scenarios_number_slider) {
+    mypal <- c(pal[1:i])
+  }
+  
   plot_ly(tt,
-          x = ~year, y = ~V2, color = ~ friendly_name, type = 'scatter',
+          x = ~year, y = ~V2, color = ~ friendly_name, colors = mypal, type = 'scatter',
           mode = 'lines', line = list(shape = "spline", smoothing = 1.3)) %>%
     add_lines(y = 0.8, name = "Decision aid", color = NULL,
               line = list(color = "black", dash = "dot")) %>%
