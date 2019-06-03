@@ -3,7 +3,7 @@ library(data.table)
 library(ggplot2)
 library(shiny)
 library(shinydashboard)
-library(shinyBS) # TODO use https://ijlyttle.github.io/bsplus/index.html
+# library(shinyBS) # TODO use https://ijlyttle.github.io/bsplus/index.html
 library(bsplus)
 library(shinythemes)
 library(shinyjs)
@@ -20,6 +20,9 @@ library(CKutils)
 
 # plan(multiprocess)
 # options(future.globals.maxSize = 6 * 1024^3)
+
+use_bs_tooltip()
+use_bs_popover()
 
 mythemeSelector <- function() {
   # from https://stackoverflow.com/questions/47827337/prodution-ready-themeselector-for-shiny
@@ -80,14 +83,14 @@ for (i in 2:9) {
   }
 }
 
-for (i in 2:9) {
-  if (!file.exists(paste0("server/tooltips_sc", i, ".R")) ||
-      !identical(file.size("server/tooltips_sc1.R"), file.size(paste0("server/tooltips_sc", i, ".R")))) {
-    tt <- readLines(file.path("server", "tooltips_sc1.R"))
-    tt <- gsub("_sc1",  paste0("_sc", i), tt)
-    writeLines(tt, paste0("server/tooltips_sc", i, ".R"))
-  }
-}
+# for (i in 2:9) {
+#   if (!file.exists(paste0("server/tooltips_sc", i, ".R")) ||
+#       !identical(file.size("server/tooltips_sc1.R"), file.size(paste0("server/tooltips_sc", i, ".R")))) {
+#     tt <- readLines(file.path("server", "tooltips_sc1.R"))
+#     tt <- gsub("_sc1",  paste0("_sc", i), tt)
+#     writeLines(tt, paste0("server/tooltips_sc", i, ".R"))
+#   }
+# }
 
 # load localities structure
 localities_indx <- read_fst("./synthpop/localities_indx.fst", as.data.table = TRUE)

@@ -12,6 +12,11 @@ tabPanel(
                       ),
                     options = list(`actions-box` = TRUE, `live-search` = TRUE),
                   multiple = TRUE)
+      %>%
+        shinyInput_label_embed(
+          icon("info") %>%
+            bs_embed_tooltip(title = "Please select the locality you are interested in simulating")
+        )
     ),
     column(
       6,
@@ -27,9 +32,8 @@ tabPanel(
       ) %>%
         shinyInput_label_embed(
           icon("info") %>%
-            bs_embed_tooltip(title = "Not a complex number")
-        )
-    )
+            bs_embed_tooltip(title = "Please select the start and end year of the simulation")
+    ))
   )),
 
   wellPanel(fluidRow(
@@ -45,6 +49,11 @@ tabPanel(
         sep = "",
         ticks = FALSE
       )
+      %>%
+        shinyInput_label_embed(
+          icon("info") %>%
+            bs_embed_tooltip(title = "Please choose how many scenarios you want to simulate")
+        )
     ),
     column(
       6,
@@ -72,7 +81,12 @@ tabPanel(
       offStatus = "danger",
       width = "100%"
     )
-  ),
+    %>%
+      shinyInput_label_embed(
+        icon("info") %>%
+          bs_embed_tooltip(title = "Please choose to use either the local or the national Index of Multideprivation (IMD)")
+      ))
+  ,
   column(
     6,
     switchInput(
@@ -83,5 +97,9 @@ tabPanel(
       offLabel = "No",
       labelWidth = "100%"
     )
-  )))
+    %>%
+      shinyInput_label_embed(
+        icon("info") %>%
+          bs_embed_tooltip(title = "Please choose if you would like the results to be presented at the Ward level")
+      ))))
 )

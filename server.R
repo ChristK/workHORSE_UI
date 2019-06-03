@@ -34,9 +34,9 @@ server = function(input, output, session) {
     }
 
     # Load tooltips ----
-    for (i in seq_len(input$scenarios_number_slider)) {
-      source(file.path("server", paste0("tooltips_sc", i, ".R")),  local = TRUE)$value
-    }
+    # for (i in seq_len(input$scenarios_number_slider)) {
+    #   source(file.path("server", paste0("tooltips_sc", i, ".R")),  local = TRUE)$value
+    # }
 
     # Conditionally disable inputs -------
     for (i in seq_len(input$scenarios_number_slider)) {
@@ -122,7 +122,7 @@ observeEvent(input[[paste0("run_simulation_sc", input$scenarios_number_slider)]]
 
 
 # Tooltips ----------------------------------------------------------------
-  source(file.path("server", "tooltips.R"),  local = TRUE)$value
+  # source(file.path("server", "tooltips.R"),  local = TRUE)$value
 
 
   # outputOptions(output, "nrows", suspendWhenHidden = FALSE)

@@ -17,14 +17,12 @@
 ## Fifth Floor, Boston, MA 02110-1301  USA.
 
 ui = tagList(
-shinyBS:::shinyBSDep, # for tooltips to work
+# shinyBS:::shinyBSDep, # for tooltips to work
 shinyjs::useShinyjs(), # for conditional deactivating inputs
 navbarPage(
 theme = shinytheme("paper"),
 title = "workHORSE",
 id = "inTabset",
-# use_bs_tooltip(),
-# use_bs_popover(),
 # Welcome tab --------------------------
 source(file.path("ui", "welcome_tab.R"),  local = TRUE)$value,
 
