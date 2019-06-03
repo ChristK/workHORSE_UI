@@ -39,12 +39,14 @@ bsCollapsePanel(
         onLabel = "Yes",
         offLabel = "No",
         labelWidth = "100%"
+
       ),
       colorSelectorInput(
         "col",
         "Scenario's color",
         "red"
-      )
+        
+        )
       %>%
         shinyInput_label_embed(
           icon("info") %>%

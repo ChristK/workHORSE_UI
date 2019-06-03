@@ -39,18 +39,19 @@ bsCollapsePanel(
         onLabel = "Yes",
         offLabel = "No",
         labelWidth = "100%"
+
       ),
       colorSelectorInput(
         "col",
         "Scenario's color",
         "red"
-      )
+        
+        )
       %>%
         shinyInput_label_embed(
           icon("info") %>%
             bs_embed_tooltip(title = "Please check if this is the baseline scenario which will serve as point of comparison with others")
         )
-
     ),
     column(
       4,
