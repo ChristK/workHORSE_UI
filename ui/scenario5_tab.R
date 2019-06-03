@@ -21,7 +21,12 @@ bsCollapsePanel(
   wellPanel(fluidRow(
     column(
       4,
-      textInput("friendly_name_sc5", "Friendly name", "Scenario 5"),
+      textInput("friendly_name_sc5", "Friendly name", "Scenario 5")
+      %>%
+        shinyInput_label_embed(
+          icon("info") %>%
+            bs_embed_tooltip(title = "Please type a name for this scenario. This will be used in model outputs")
+        ),
       uiOutput("init_year_slider_sc5")
     ),
     column(
@@ -39,7 +44,11 @@ bsCollapsePanel(
         "col",
         "Scenario's color",
         "red"
-        
+      )
+      %>%
+        shinyInput_label_embed(
+          icon("info") %>%
+            bs_embed_tooltip(title = "Please check if this is the baseline scenario which will serve as point of comparison with others")
         )
     ),
     column(
@@ -67,6 +76,11 @@ bsCollapsePanel(
           placeholder = "",
           buttonLabel = "Load scenario"
         )
+      %>%
+        shinyInput_label_embed(
+          icon("info") %>%
+            bs_embed_tooltip(title = "Load scenario: this loads an *.rds file which contains a previously saved scenario specification. WARNING: This will overwrite")
+        )
       )
     ))
   ),
@@ -86,7 +100,13 @@ bsCollapsePanel("Eligibility Criteria",
                       1,
                       sep = "",
                       ticks = FALSE
-                    ),
+                    )
+                      %>%
+                        shinyInput_label_embed(
+                          icon("info") %>%
+                            bs_embed_tooltip(title = "Please select the age range of people to be invited")
+                        )
+                    ,
                     sliderInput(
                       "frequency_eligibility_slider_sc5",
                       "Minimum allowed years between two Health Checks",
@@ -97,6 +117,11 @@ bsCollapsePanel("Eligibility Criteria",
                       sep = "",
                       ticks = FALSE
                     )
+                    %>%
+                      shinyInput_label_embed(
+                        icon("info") %>%
+                          bs_embed_tooltip(title = "Please select the minimum number of years between two concecutive Health Checks")
+                      )
                   ),
                   column(
                     4,
@@ -107,6 +132,11 @@ bsCollapsePanel("Eligibility Criteria",
                       onLabel = "Yes",
                       offLabel = "No",
                       labelWidth = "100%"
+                    )
+                    %>%
+                      shinyInput_label_embed(
+                        icon("info") %>%
+                          bs_embed_tooltip(title = "Please select whether known hypertensives should be eligible for a Health Check")
                     ),
                     br(),
                     br(),
@@ -118,6 +148,11 @@ bsCollapsePanel("Eligibility Criteria",
                       offLabel = "No",
                       labelWidth = "100%"
                     )
+                    %>%
+                      shinyInput_label_embed(
+                        icon("info") %>%
+                          bs_embed_tooltip(title ="Please select whether known diabetics should be eligible for a Health Check")
+                      )
                   ),
                   column(
                     4,
@@ -129,6 +164,11 @@ bsCollapsePanel("Eligibility Criteria",
                       offLabel = "No",
                       labelWidth = "100%"
                     )
+                    %>%
+                      shinyInput_label_embed(
+                        icon("info") %>%
+                          bs_embed_tooltip(title = "Please select to simulate a no Health Check scenario. It hides all relevant parameters from the user interface")
+                      )
                   )
                 ))),
 
@@ -151,6 +191,11 @@ bsCollapsePanel(
           ticks = FALSE,
           post  = " %"
         )
+        %>%
+          shinyInput_label_embed(
+            icon("info") %>%
+              bs_embed_tooltip(title = "Please select the percentage of eligible population that is invited every year")
+          )
       ),
       column(
         4,
@@ -162,6 +207,11 @@ bsCollapsePanel(
           500,
           1
         )
+        %>%
+          shinyInput_label_embed(
+            icon("info") %>%
+              bs_embed_tooltip(title = "Please enter the cost per invitation")
+          )
       ),
       column(
         4,
@@ -173,6 +223,11 @@ bsCollapsePanel(
           onLabel = "Show",
           offLabel = "Hide",
         )
+        %>%
+          shinyInput_label_embed(
+            icon("info") %>%
+              bs_embed_tooltip(title = "Reveals more granular inputs")
+          )
       )
     ),
     fluidRow(column(
@@ -188,6 +243,11 @@ bsCollapsePanel(
         ticks = FALSE,
         post  = " %"
       )
+      %>%
+        shinyInput_label_embed(
+          icon("info") %>%
+            bs_embed_tooltip(title = "Please select the percentage of eligible population in QIMD 1 (most deprived) areas that is invited every year")
+        )
     ),
     column(
       4,
@@ -199,6 +259,11 @@ bsCollapsePanel(
         500,
         1
       )
+      %>%
+        shinyInput_label_embed(
+          icon("info") %>%
+            bs_embed_tooltip(title = "Please enter the cost per invitation in QIMD 1 (most deprived) areas")
+        )
     )),
     fluidRow(column(
       4,
@@ -213,6 +278,11 @@ bsCollapsePanel(
         ticks = FALSE,
         post  = " %"
       )
+      %>%
+        shinyInput_label_embed(
+          icon("info") %>%
+            bs_embed_tooltip(title = "Please select the percentage of eligible population in QIMD 2 areas that is invited every year")
+        )
     ),
     column(
       4,
@@ -224,6 +294,11 @@ bsCollapsePanel(
         500,
         1
       )
+      %>%
+        shinyInput_label_embed(
+          icon("info") %>%
+            bs_embed_tooltip(title = "Please enter the cost per invitation in QIMD 2 areas")
+        )
     )),
     fluidRow(column(
       4,
@@ -238,6 +313,11 @@ bsCollapsePanel(
         ticks = FALSE,
         post  = " %"
       )
+      %>%
+        shinyInput_label_embed(
+          icon("info") %>%
+            bs_embed_tooltip(title = "Please select the percentage of eligible population in QIMD 3 areas that is invited every year")
+        )
     ),
     column(
       4,
@@ -249,6 +329,11 @@ bsCollapsePanel(
         500,
         1
       )
+      %>%
+        shinyInput_label_embed(
+          icon("info") %>%
+            bs_embed_tooltip(title = "Please enter the cost per invitation in QIMD 3 areas")
+        )
     )),
     fluidRow(column(
       4,
@@ -263,6 +348,11 @@ bsCollapsePanel(
         ticks = FALSE,
         post  = " %"
       )
+      %>%
+        shinyInput_label_embed(
+          icon("info") %>%
+            bs_embed_tooltip(title = "Please select the percentage of eligible population in QIMD 4 areas that is invited every year")
+        )
     ),
     column(
       4,
@@ -274,6 +364,11 @@ bsCollapsePanel(
         500,
         1
       )
+      %>%
+        shinyInput_label_embed(
+          icon("info") %>%
+            bs_embed_tooltip(title = "Please enter the cost per invitation in QIMD 4 areas")
+        )
     )),
     fluidRow(column(
       4,
@@ -288,6 +383,11 @@ bsCollapsePanel(
         ticks = FALSE,
         post  = " %"
       )
+      %>%
+        shinyInput_label_embed(
+          icon("info") %>%
+            bs_embed_tooltip(title = "Please select the percentage of eligible population in QIMD 5 (least deprived) areas that is invited every year")
+        )
     ),
     column(
       4,
@@ -299,6 +399,11 @@ bsCollapsePanel(
         500,
         1
       )
+      %>%
+        shinyInput_label_embed(
+          icon("info") %>%
+            bs_embed_tooltip(title = "Please enter the cost per invitation in QIMD 5 (least deprived) areas")
+        )
     ))
   )
 ),
@@ -322,11 +427,21 @@ bsCollapsePanel("Health Checks Received (%)",
                         ticks = FALSE,
                         post  = " %"
                       )
+                      %>%
+                        shinyInput_label_embed(
+                          icon("info") %>%
+                            bs_embed_tooltip(title = "Please select the percentage of people who complete a Health Check after an invitation")
+                        )
                     ),
                     column(
                       4,
                       numericInput("uptake_cost_sc5",
                                    "Cost per completed Health Check", 20, 0, 500, 1)
+                      %>%
+                        shinyInput_label_embed(
+                          icon("info") %>%
+                            bs_embed_tooltip(title = "Please enter the cost per individual completing a Health Check")
+                        )
                     ),
                     column(
                       4,
@@ -339,6 +454,11 @@ bsCollapsePanel("Health Checks Received (%)",
                         offLabel = "Hide",
                         labelWidth = "100%"
                       )
+                      %>%
+                        shinyInput_label_embed(
+                          icon("info") %>%
+                            bs_embed_tooltip(title = "Reveal more granular inputs")
+                        )
                     )
                   ),
                   fluidRow(
@@ -350,6 +470,11 @@ bsCollapsePanel("Health Checks Received (%)",
                       onLabel = "Yes",
                       offLabel = "No",
                       labelWidth = "100%"
+                    )
+                    %>%
+                      shinyInput_label_embed(
+                        icon("info") %>%
+                          bs_embed_tooltip(title = "This option will allow you to vary randomly the percentages of people completing a Health Check by sex, age, QIMD and QRISK")
                     ),
                     uiOutput("uptake_table_help_sc5"),
                     tableOutput("uptake_table_sc5")
@@ -376,6 +501,11 @@ bsCollapsePanel(
           ticks = FALSE,
           post  = " %"
         )
+        %>%
+          shinyInput_label_embed(
+            icon("info") %>%
+              bs_embed_tooltip(title = "Please select the percentage of people with QRISK score higher than 10 that are prescribed statins")
+          )
       ),
       column(
         4,
@@ -390,6 +520,11 @@ bsCollapsePanel(
           ticks = FALSE,
           post  = " %"
         )
+        %>%
+          shinyInput_label_embed(
+            icon("info") %>%
+              bs_embed_tooltip(title = "Please select the percentage of people with systolic blood pressure higher than 140 mmHg that are prescribed antihypertensive medication")
+          )
       ),
       column(
         4,
@@ -402,6 +537,11 @@ bsCollapsePanel(
           offLabel = "Hide",
           labelWidth = "100%"
         )
+        %>%
+          shinyInput_label_embed(
+            icon("info") %>%
+              bs_embed_tooltip(title = "Reveal more granular options")
+          )
       )
     )),
 
@@ -437,6 +577,11 @@ bsCollapsePanel(
                   ticks = FALSE,
                   post  = " %"
                 )
+                  %>%
+                    shinyInput_label_embed(
+                      icon("info") %>%
+                        bs_embed_tooltip(title = "Please enter the percentage of people quitting smoking in the last year")
+                    )
               ),
               column(
                 4,
@@ -448,6 +593,11 @@ bsCollapsePanel(
                   5e6,
                   1
                 )
+                %>%
+                  shinyInput_label_embed(
+                    icon("info") %>%
+                      bs_embed_tooltip(title = "Please enter the cost per participant in the smoking cessation program")
+                  )
               ),
               column(
                 4,
@@ -459,6 +609,11 @@ bsCollapsePanel(
                   5e6,
                   1
                 )
+                %>%
+                  shinyInput_label_embed(
+                    icon("info") %>%
+                      bs_embed_tooltip(title = "Please enter the annual fixed cost of the smoking cessation program")
+                  )
               )
             )),
   wellPanel(
@@ -476,6 +631,10 @@ bsCollapsePanel(
         sep = "",
         ticks = FALSE,
         post  = " %"
+      )  %>%
+        shinyInput_label_embed(
+          icon("info") %>%
+            bs_embed_tooltip(title = "Please enter the percentage of overweight and obese participants losing weigth")
       ),
       sliderInput(
         "wghtreduc_slider_sc5",
@@ -488,6 +647,11 @@ bsCollapsePanel(
         ticks = FALSE,
         post  = " %"
       )
+      %>%
+        shinyInput_label_embed(
+          icon("info") %>%
+            bs_embed_tooltip(title = "Please enter average percentage reduction in BMI per person in a year, e.g. 5% reduction in BMI")
+        )
     ),
     column(
       4,
@@ -499,6 +663,11 @@ bsCollapsePanel(
         5e6,
         1
       )
+      %>%
+        shinyInput_label_embed(
+          icon("info") %>%
+            bs_embed_tooltip(title = "Please enter the cost per participant in the weight management program")
+        )
     ),
     column(
       4,
@@ -510,6 +679,11 @@ bsCollapsePanel(
         5e6,
         1
       )
+      %>%
+        shinyInput_label_embed(
+          icon("info") %>%
+            bs_embed_tooltip(title = "Please enter the annual fixed cost of the weight management program")
+        )
     )
   )
   ),
@@ -528,6 +702,11 @@ bsCollapsePanel(
         sep = "",
         ticks = FALSE,
         post  = " %"
+      )
+      %>%
+        shinyInput_label_embed(
+          icon("info") %>%
+            bs_embed_tooltip(title = "Please enter the percentage of participants increasing their physical activity levels")
       ),
       sliderInput(
         "papincr_slider_sc5",
@@ -540,6 +719,11 @@ bsCollapsePanel(
         ticks = FALSE,
         post  = " %"
       )
+      %>%
+        shinyInput_label_embed(
+          icon("info") %>%
+            bs_embed_tooltip(title = "Please enter the average increase in days of physical activity, e.g. 2 days")
+        )
     ),
     column(
       4,
@@ -551,6 +735,11 @@ bsCollapsePanel(
         5e6,
         1
       )
+      %>%
+        shinyInput_label_embed(
+          icon("info") %>%
+            bs_embed_tooltip(title = "Please enter the cost per participant in the the physical activity program")
+        )
     ),
     column(
       4,
@@ -562,6 +751,11 @@ bsCollapsePanel(
         5e6,
         1
       )
+      %>%
+        shinyInput_label_embed(
+          icon("info") %>%
+            bs_embed_tooltip(title = "Please enter the annual fixed cost of the physical activity program")
+        )
     )
   ))
 ),
@@ -572,6 +766,7 @@ bsCollapsePanel(
   style = "default",
   wellPanel(fluidRow(
     h5("Scenario ensembles"),
+    h6("In this section you can specify the above scenario to be part of a serial or parallel ensemble."),
     column(6,
   switchInput(
     "serial_ensemble_checkbox_sc5",
@@ -581,6 +776,11 @@ bsCollapsePanel(
     offLabel = "No",
     labelWidth = "100%"
   )
+  %>%
+    shinyInput_label_embed(
+      icon("info") %>%
+        bs_embed_tooltip(title = "This allows you to run simultaneously different scenarios for different time spans, e.g scenario 1 from years 1-5 and scenario 2 from years 6-10")
+    )
   )),
 fluidRow(
     column(6,
@@ -592,6 +792,11 @@ fluidRow(
              offLabel = "No",
              labelWidth = "100%"
            )
+           %>%
+             shinyInput_label_embed(
+               icon("info") %>%
+                 bs_embed_tooltip(title = "This allows you to run simultaneously different scenarios for different groups of the population, e.g lifestyle interventions for the most deprived and more appoitments offered for the individuals at risk")
+             )
     ),
     column(6,
     sliderInput(
@@ -605,6 +810,11 @@ fluidRow(
       ticks = FALSE,
       post  = " %"
     )
+    %>%
+      shinyInput_label_embed(
+        icon("info") %>%
+          bs_embed_tooltip(title = "Percentage of the population this scenario applies to if it is part of a parallel or sequential ensemble")
+      )
     ))),
   wellPanel(fluidRow(
     h5("Digital Health Checks"),
@@ -617,6 +827,11 @@ fluidRow(
              offLabel = "No",
              labelWidth = "100%"
            )
+           %>%
+             shinyInput_label_embed(
+               icon("info") %>%
+                 bs_embed_tooltip(title = "When calculating the Qrisk function this option allows you to exclude cholesterol estimates")
+             )
     ),
     column(4,
            switchInput(
@@ -627,6 +842,11 @@ fluidRow(
              offLabel = "No",
              labelWidth = "100%"
            )
+           %>%
+             shinyInput_label_embed(
+               icon("info") %>%
+                 bs_embed_tooltip(title = "When calculating the Qrisk function this option allows you to exclude systolic blood pressure estimates")
+             )
     ),
     column(4,
            switchInput(
@@ -637,10 +857,19 @@ fluidRow(
              offLabel = "No",
              labelWidth = "100%"
            )
+           %>%
+             shinyInput_label_embed(
+               icon("info") %>%
+                 bs_embed_tooltip(title = "When calculating the Qrisk function this option allows you to exclude BMI estimates")
+             )
     )
     )),
   wellPanel(fluidRow(
     h5("Structural Policies / Calibration"),
+    h6("In this section the effect of implementing structural/population level strategies in addition",
+               "to the health checks programm specified above can be modelled. ",
+      "Alternatively, this section can be used to adjust the model risk factors population model",
+     "to match local estimates if data is available. "),
     column(6,
            sliderInput(
              "structural_smk_slider_sc5",
@@ -652,6 +881,11 @@ fluidRow(
              sep = "",
              ticks = FALSE,
              post  = " %"
+           )
+           %>%
+             shinyInput_label_embed(
+               icon("info") %>%
+                 bs_embed_tooltip(title = "Relative change (%) in the prevalence of smoking as result of a structural policy")
            ),
            sliderInput(
              "structural_fv_slider_sc5",
@@ -663,6 +897,10 @@ fluidRow(
              sep = "",
              ticks = FALSE,
              post  = " %"
+           )  %>%
+             shinyInput_label_embed(
+               icon("info") %>%
+                 bs_embed_tooltip(title = "Relative change (%) in the prevalence of fruit and vegetable consumption as result of a structural policy")
            ),
            sliderInput(
              "structural_alcohol_slider_sc5",
@@ -674,6 +912,10 @@ fluidRow(
              sep = "",
              ticks = FALSE,
              post  = " %"
+           )  %>%
+             shinyInput_label_embed(
+               icon("info") %>%
+                 bs_embed_tooltip(title = "Relative change (%) in the population mean of alcohol consumption as result of a structural policy")
            ),
            sliderInput(
              "structural_pa_slider_sc5",
@@ -685,6 +927,10 @@ fluidRow(
              sep = "",
              ticks = FALSE,
              post  = " %"
+           )  %>%
+             shinyInput_label_embed(
+               icon("info") %>%
+                 bs_embed_tooltip(title = "Relative change (%) in the prevalence of physical activity as result of a structural policy")
            ),
            sliderInput(
              "structural_bmi_slider_sc5",
@@ -696,6 +942,10 @@ fluidRow(
              sep = "",
              ticks = FALSE,
              post  = " %"
+           )  %>%
+             shinyInput_label_embed(
+               icon("info") %>%
+                 bs_embed_tooltip(title = "Relative change (%) in the population mean of BMI as result of a structural policy")
            ),
            sliderInput(
              "structural_sbp_slider_sc5",
@@ -707,6 +957,10 @@ fluidRow(
              sep = "",
              ticks = FALSE,
              post  = " %"
+           )  %>%
+             shinyInput_label_embed(
+               icon("info") %>%
+                 bs_embed_tooltip(title = "Relative change (%) in the population mean of systolic blood pressure as result of a structural policy")
            ),
            sliderInput(
              "structural_chol_slider_sc5",
@@ -718,6 +972,10 @@ fluidRow(
              sep = "",
              ticks = FALSE,
              post  = " %"
+           )  %>%
+             shinyInput_label_embed(
+               icon("info") %>%
+                 bs_embed_tooltip(title = "Relative change (%) in the population mean of cholesterol as result of a structural policy")
            )
     ),
     column(3
@@ -741,6 +999,11 @@ bsCollapsePanel("Notes",
                     rows = 6,
                     resize = "both"
                   )
+                  %>%
+                    shinyInput_label_embed(
+                      icon("info") %>%
+                        bs_embed_tooltip(title = "Add a description of this scenario or any important notes to remember")
+                    )
                 )))
   ),
 
@@ -749,7 +1012,7 @@ conditionalPanel(condition = "input.level <= input.scenarios_number_slider",
                  column(6,
                         actionButton(
                           "previous_sc5",
-                          "Go to next scenario",
+                          "Go to previous scenario",
                           icon = icon("step-backward"),
                           #style = "color: #fff; background-color: #337ab7; border-color: #2e6da4",
                           class = "btn btn-primary",
