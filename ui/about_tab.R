@@ -1,9 +1,11 @@
 tabPanel("About",
          h4( "workHORSE: A decision support tool for NHS Health Checks"),
 
-         p("workHORSE is an implemetation of the IMPACTncd framework, developed by Chris Kypridemos."),
+         p("workHORSE is an implemetation of the IMPACTncd framework, developed
+           by Chris Kypridemos with contributions from Peter Crowther (Melandra Ltd),
+           Maria Guzman-Castillo, Amandine Robert, and Piotr Bandosz."),
 
-         p("Copyright (C) 2018  Chris Kypridemos"),
+         p("Copyright (C) 2018-2019 Chris Kypridemos"),
 
          p("workHORSE is free software; you can redistribute it and/or modify
           it under the terms of the GNU General Public License as published by
@@ -15,6 +17,7 @@ tabPanel("About",
           MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
           GNU General Public License for more details."),
 
+         # TODO add a button that links or contains the full GPL licence
          p("You should have received a copy of the GNU General Public License
           along with this program; if not, see <http://www.gnu.org/licenses/>
           or write to the Free Software Foundation, Inc., 51 Franklin Street,

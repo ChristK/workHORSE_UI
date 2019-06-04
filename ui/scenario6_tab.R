@@ -20,64 +20,99 @@ bsCollapsePanel(
   style = "default",
   wellPanel(fluidRow(
     column(
-      4,
+      2,
       textInput("friendly_name_sc6", "Friendly name", "Scenario 6")
       %>%
         shinyInput_label_embed(
           icon("info") %>%
-            bs_embed_tooltip(title = "Please type a name for this scenario. This will be used in model outputs")
-        ),
-      uiOutput("init_year_slider_sc6")
+            bs_embed_tooltip(title = "Please pick a name for this scenario. This will be used in all model outputs.")
+        )
     ),
     column(
-      4,
-      br(),
+      2, offset = 2,
       switchInput(
         "baseline_sc6",
         "Baseline scenario",
         FALSE,
         onLabel = "Yes",
         offLabel = "No",
-        labelWidth = "100%"
+        labelWidth = "100%",
+        # size = "large",
+        width = "100%"
       )
       %>%
         shinyInput_label_embed(
           icon("info") %>%
-            bs_embed_tooltip(title = "Please check if this is the baseline scenario which will serve as point of comparison with others")
-        )
+            bs_embed_tooltip(title = "Please check if you would like this to be
+                             the baseline scenario which will serve as point of
+                             comparison with all other scenarios. In every run,
+                             you have to have one and only one baseline scenario
+                             (or ensemble scenario).",
+                             placement = "bottom")
+        ),
+      uiOutput("init_year_slider_sc6")
     ),
     column(
-      4,
+      3, offset = 2,
+      actionButton(
+        "collapse_panels_button_sc6",
+        "Expand/Collapse panels",
+        icon = icon("bars"),
+        width = "230px"
+      ),
+      br(),
       br(),
       downloadButton(
         "save_sc6",
-        "Save scenario",
-        #icon("save"),
-        #class = "btn-info",
+        "Save scenario         ",
+        icon("save"),
+        # class = "btn-info",
         labelWidth = "100%",
-        width = "100%"
+        width = "230px"
       ),
-        actionButton(
-          "collapse_panels_button_sc6",
-          "Expand/Collapse panels",
-          icon("minus-square"),
-          labelWidth = "100%"
-        ),
-        fileInput(
-          "load_sc6",
-          "",
-          multiple = FALSE,
-          accept = ".rds",
-          placeholder = "",
-          buttonLabel = "Load scenario"
-        )
-      %>%
-        shinyInput_label_embed(
-          icon("info") %>%
-            bs_embed_tooltip(title = "Load scenario: this loads an *.rds file which contains a previously saved scenario specification. WARNING: This will overwrite")
-        )
-      )
-    ))
+      br(),
+      fileInput(
+        "load_sc6",
+        "",
+        multiple = FALSE,
+        accept = ".rds",
+        placeholder = "",
+        buttonLabel = "Load scenario"
+      ) # ,
+      # tags$style("
+      #        .btn-file {
+      #        background-color:red;
+      #        border-color: red;
+      #        }
+      #
+      #        .progress-bar {
+      #        background-color: red;
+      #        }
+      #
+      #        ")
+    ),
+    column(
+      1, align = "right",
+      icon("info") %>%
+        bs_embed_tooltip(title = "Expands all scenario parameter panels, if all
+                         panels are collapsed. Collapses all scenario parameter
+                         panels, if at least one is expanded."),
+      br(),
+      br(),
+      icon("info") %>%
+        bs_embed_tooltip(title = "Saves the current scenario in a .rds file
+                                  in your default 'download' folder for reuse or
+                                  archiving purposes"),
+      br(),
+      br(),
+      icon("info") %>%
+        bs_embed_tooltip(title = "Loads a .rds file
+                                  which contains a previously saved scenario
+                                  specification. WARNING: This will overwrite
+                                  all the parameters currently in this scenario.")
+    )
+  )
+)
   ),
 
 # Eligibility panel ----------------------------------------------------------

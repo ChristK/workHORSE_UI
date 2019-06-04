@@ -3,11 +3,12 @@ library(data.table)
 library(ggplot2)
 library(shiny)
 library(shinydashboard)
-# library(shinyBS) # TODO use https://ijlyttle.github.io/bsplus/index.html
-library(bsplus)
+# library(shinydashboardPlus)
+library(shinyBS)
+library(bsplus) # from https://ijlyttle.github.io/bsplus/index.html
 library(shinythemes)
 library(shinyjs)
-library(shinyWidgets)
+library(shinyWidgets)# http://shinyapps.dreamrs.fr/shinyWidgets/
 library(fst)
 library(DT)
 library(plotly)

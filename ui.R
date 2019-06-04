@@ -16,51 +16,52 @@
 ## or write to the Free Software Foundation, Inc., 51 Franklin Street,
 ## Fifth Floor, Boston, MA 02110-1301  USA.
 
+myenv <- environment()
 ui = tagList(
 # shinyBS:::shinyBSDep, # for tooltips to work
 shinyjs::useShinyjs(), # for conditional deactivating inputs
 navbarPage(
-theme = shinytheme("paper"),
+theme = shinytheme("paper"), #cosmo
 title = "workHORSE",
 id = "inTabset",
 # Welcome tab --------------------------
-source(file.path("ui", "welcome_tab.R"),  local = TRUE)$value,
+source(file.path("ui", "welcome_tab.R"), local = TRUE)$value,
 
 # Simulation parameters tab --------------------------
-source(file.path("ui", "simulation_parameters_tab.R"),  local = TRUE)$value,
+source(file.path("ui", "simulation_parameters_tab.R"), local = TRUE)$value,
 
 # Scenario parameters tab --------------------------
 tabPanel("Scenario parameters",
   uiOutput("scenario_tabs"),
-  source(file.path("ui", "scenario1_tab.R"),  local = TRUE)$value,
-  source(file.path("ui", "scenario2_tab.R"),  local = TRUE)$value,
-  source(file.path("ui", "scenario3_tab.R"),  local = TRUE)$value,
-  source(file.path("ui", "scenario4_tab.R"),  local = TRUE)$value,
-  source(file.path("ui", "scenario5_tab.R"),  local = TRUE)$value,
-  source(file.path("ui", "scenario6_tab.R"),  local = TRUE)$value,
-  source(file.path("ui", "scenario7_tab.R"),  local = TRUE)$value,
-  source(file.path("ui", "scenario8_tab.R"),  local = TRUE)$value,
-  source(file.path("ui", "scenario9_tab.R"),  local = TRUE)$value
+  source(file.path("ui", "scenario1_tab.R"), local = TRUE)$value,
+  source(file.path("ui", "scenario2_tab.R"), local = TRUE)$value,
+  source(file.path("ui", "scenario3_tab.R"), local = TRUE)$value,
+  source(file.path("ui", "scenario4_tab.R"), local = TRUE)$value,
+  source(file.path("ui", "scenario5_tab.R"), local = TRUE)$value,
+  source(file.path("ui", "scenario6_tab.R"), local = TRUE)$value,
+  source(file.path("ui", "scenario7_tab.R"), local = TRUE)$value,
+  source(file.path("ui", "scenario8_tab.R"), local = TRUE)$value,
+  source(file.path("ui", "scenario9_tab.R"), local = TRUE)$value
 ),
 # Output tab --------------------------
-source(file.path("ui", "output_tab.R"),  local = TRUE)$value,
+source(file.path("ui", "output_tab.R"), local = TRUE)$value,
 
 #inputs = mythemeSelector(),
 
 navbarMenu("More",
 # Advance settings tab --------------------------
-source(file.path("ui", "advanced_settings_tab.R"),  local = TRUE)$value,
+source(file.path("ui", "advanced_settings_tab.R"), local = TRUE)$value,
 
 # Documentation tab --------------------------
-source(file.path("ui", "documentation_tab.R"),  local = TRUE)$value,
+source(file.path("ui", "documentation_tab.R"), local = TRUE)$value,
 
 # About tab --------------------------
-source(file.path("ui", "about_tab.R"),  local = TRUE)$value
+source(file.path("ui", "about_tab.R"), local = TRUE)$value
 )),
 
 
 # Add version number to the right
 HTML("<script>var parent = document.getElementsByClassName('navbar-nav');
-parent[0].insertAdjacentHTML( 'afterend', '<ul class=\"nav navbar-nav navbar-right\"><li class=\"disabled\"><a href=\"#\">v0.8</a></li></ul>' );</script>")
+parent[0].insertAdjacentHTML( 'afterend', '<ul class=\"nav navbar-nav navbar-right\"><li class=\"disabled\"><a href=\"#\">v0.9</a></li></ul>' );</script>")
 )
 

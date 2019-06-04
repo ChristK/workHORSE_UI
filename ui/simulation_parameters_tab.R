@@ -48,15 +48,15 @@ tabPanel(
         1,
         sep = "",
         ticks = FALSE
-      )
-      %>%
+      ) %>%
         shinyInput_label_embed(
+          # shiny_iconlink("info") %>%
           icon("info") %>%
             bs_embed_tooltip(title = "Please choose how many scenarios you want to simulate")
         )
     ),
     column(
-      6,
+      5,
       checkboxGroupInput(
         "scope_selector",
         "Simulation scope",
@@ -67,6 +67,12 @@ tabPanel(
                      "Cost-effectiveness",
                      "Equity")
       )
+    ),
+    column( # This only needed for the icon of the tooltip
+      1, align = 'right',
+      # shiny_iconlink("info") %>%
+      icon("info") %>%
+        bs_embed_tooltip(title = "Please choose what type of outputs would you like to estimate")
     )
   )),
 
