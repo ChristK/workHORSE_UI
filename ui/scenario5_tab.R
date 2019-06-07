@@ -42,7 +42,14 @@ bsCollapsePanel(
           icon("info") %>%
             bs_embed_tooltip(title = "Please pick a colour for this scenario. This will be displayed in all model outputs.")
         ),
-      uiOutput("panel_col_sc5")
+      uiOutput("panel_col_sc5"),
+      
+      selectInput(
+        inputId = "symbol_sc5",
+        label = "Pick a symbol for the scenario",
+        choices = def_sym,
+        selected = def_sym[[5]]
+      )
       
     ),
     column(

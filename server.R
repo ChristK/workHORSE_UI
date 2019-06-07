@@ -12,11 +12,14 @@ server = function(input, output, session) {
 
 
 # The choice of scenario's colours
+
+  
   colours <- reactive({
       setnames(transpose(as.data.table(lapply(seq_len(input$scenarios_number_slider), function(i) {
         c(input[[paste0("col_sc", i)]],
-          input[[paste0("friendly_name_sc", i)]])
-      }))), c("colour", "names"))
+          input[[paste0("friendly_name_sc", i)]],
+          input[[paste0("symbol_sc", i)]])
+      }))), c("colour", "names", "symbol"))
   })
 
   

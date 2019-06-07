@@ -76,6 +76,9 @@ mythemeSelector <- function() {
 def_col <- viridis(9, option = "D")
 def_col_small <- def_col[c(1, 9, 5, 3, 7, 2, 8, 4, 6)]
 
+def_sym <- c("circle-dot", "square", "diamond", "cross", "triangle-up", "pentagon", " star", "hexagon-open-dot", "triangle-down")
+
+
 #, ceiling(length(def_col)/9)]
 
 
@@ -91,9 +94,23 @@ for (i in 2:9) {
                  paste0("input.level == ", i),
                  gsub("_sc1",  paste0("_sc", i), 
                       gsub("def_col_small\\[\\[1\\]\\]", 
-                           paste0("def_col_small\\[\\[", i, "\\]\\]"), tt)
-              )))
+                           paste0("def_col_small\\[\\[", i, "\\]\\]"),
+                      gsub("def_sym\\[\\[1\\]\\]", 
+                           paste0("def_sym\\[\\[", i, "\\]\\]"), tt)
+                      ))))
     writeLines(tt, paste0("ui/scenario", i, "_tab.R"))
+    # tt2 <- readLines(file.path("ui", "scenario1_tab.R"))
+    # tt2 <- gsub("Scenario 1",
+    #            paste0("Scenario ", i),
+    #            gsub(
+    #              "input.level == 1",
+    #              paste0("input.level == ", i),
+    #              gsub("_sc1",  paste0("_sc", i),
+    #                   gsub("def_sym\\[\\[1\\]\\]", 
+    #                        paste0("def_sym\\[\\[", i, "\\]\\]"), tt2)
+    #                   
+    #              )))
+    # writeLines(tt2, paste0("ui/scenario", i, "_tab.R"))
   }
 }
 
