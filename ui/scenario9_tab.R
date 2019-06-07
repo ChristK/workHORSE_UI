@@ -21,31 +21,12 @@ bsCollapsePanel(
   style = "default",
   wellPanel(fluidRow(
     column(
-      4,
+      2,
       textInput("friendly_name_sc9", "Friendly name", "Scenario 9")
       %>%
         shinyInput_label_embed(
           icon("info") %>%
-            bs_embed_tooltip(title = "Please type a name for this scenario. This will be used in model outputs")
-        ),
-      uiOutput("init_year_slider_sc9")
-    ),
-    column(
-      4,
-      br(),
-      switchInput(
-        "baseline_sc9",
-        "Baseline scenario",
-        FALSE,
-        onLabel = "Yes",
-        offLabel = "No",
-        labelWidth = "100%"
-
-      )
-      %>%
-        shinyInput_label_embed(
-          icon("info") %>%
-            bs_embed_tooltip(title = "Please check if this is the baseline scenario which will serve as point of comparison with others")
+            bs_embed_tooltip(title = "Please pick a name for this scenario. This will be used in all model outputs.")
         ),
       
       colourInput(
@@ -55,43 +36,104 @@ bsCollapsePanel(
         palette = "limited",
         allowedCols = def_col,
         returnName = TRUE
-      ),
-      uiOutput("panel_col_sc9")
-    ),
-    column(
-      4,
-      br(),
-      downloadButton(
-        "save_sc9",
-        "Save scenario",
-        #icon("save"),
-        #class = "btn-info",
-        labelWidth = "100%",
-        width = "100%"
-      ),
-        actionButton(
-          "collapse_panels_button_sc9",
-          "Expand/Collapse panels",
-          icon("minus-square"),
-          labelWidth = "100%"
-        ),
-        fileInput(
-          "load_sc9",
-          "",
-          multiple = FALSE,
-          accept = ".rds",
-          placeholder = "",
-          buttonLabel = "Load scenario"
-        )
+      )
       %>%
         shinyInput_label_embed(
           icon("info") %>%
-            bs_embed_tooltip(title = "Load scenario: this loads an *.rds file which contains a previously saved scenario specification. WARNING: This will overwrite")
-        )
+            bs_embed_tooltip(title = "Please pick a colour for this scenario. This will be displayed in all model outputs.")
+        ),
+      uiOutput("panel_col_sc9")
+      
+    ),
+    column(
+      2, offset = 2,
+      switchInput(
+        "baseline_sc9",
+        "Baseline scenario",
+        FALSE,
+        onLabel = "Yes",
+        offLabel = "No",
+        labelWidth = "100%",
+        # size = "large",
+        width = "100%"
       )
-    
+      %>%
+        shinyInput_label_embed(
+          icon("info") %>%
+             bs_embed_tooltip(title = "Please check if you would like this to be
+                             the baseline scenario which will serve as point of
+                             comparison with all other scenarios. In every run,
+                             you have to have one and only one baseline scenario
+                             (or ensemble scenario).",
+                       placement = "bottom")
+        ),
+      uiOutput("init_year_slider_sc9")
+  
+),
+
+    column(
+      3, offset = 2,
+      actionButton(
+        "collapse_panels_button_sc9",
+        "Expand/Collapse panels",
+        icon = icon("bars"),
+        width = "230px"
+      ),
+      br(),
+      br(),
+      downloadButton(
+        "save_sc9",
+        "Save scenario         ",
+        icon("save"),
+        # class = "btn-info",
+        labelWidth = "100%",
+        width = "230px"
+      ),
+      br(),
+      fileInput(
+        "load_sc9",
+        "",
+        multiple = FALSE,
+        accept = ".rds",
+        placeholder = "",
+        buttonLabel = "Load scenario"
+      ) # ,
+      # tags$style("
+      #        .btn-file {
+      #        background-color:red;
+      #        border-color: red;
+      #        }
+      #
+      #        .progress-bar {
+      #        background-color: red;
+      #        }
+      #
+      #        ")
+    ),
+    column(
+      1, align = "right",
+      icon("info") %>%
+        bs_embed_tooltip(title = "Expands all scenario parameter panels, if all
+                         panels are collapsed. Collapses all scenario parameter
+                         panels, if at least one is expanded."),
+      br(),
+      br(),
+      icon("info") %>%
+        bs_embed_tooltip(title = "Saves the current scenario in a .rds file
+                                  in your default 'download' folder for reuse or
+                                  archiving purposes"),
+      br(),
+      br(),
+      icon("info") %>%
+        bs_embed_tooltip(title = "Loads a .rds file
+                                  which contains a previously saved scenario
+                                  specification. WARNING: This will overwrite
+                                  all the parameters currently in this scenario.")
     )
-    )),
+  )
+)
+  ),
+
 
 # Eligibility panel ----------------------------------------------------------
 bsCollapsePanel("Eligibility Criteria",
