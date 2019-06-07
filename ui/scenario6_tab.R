@@ -11,6 +11,7 @@ conditionalPanel(
       # "Prescription Rate",
       # "Impact on Lifestyle"
     ),
+    
 
 
 # General panel ----------------------------------------------------------
@@ -46,11 +47,16 @@ bsCollapsePanel(
           icon("info") %>%
             bs_embed_tooltip(title = "Please check if this is the baseline scenario which will serve as point of comparison with others")
         ),
+      
       colourInput(
         inputId = "col_sc6",
         label = "Pick a color for the scenario",
-        palette = "limited"
-      )
+        value = def_col_small[[6]],
+        palette = "limited",
+        allowedCols = def_col,
+        returnName = TRUE
+      ),
+      uiOutput("panel_col_sc6")
     ),
     column(
       4,
@@ -83,8 +89,9 @@ bsCollapsePanel(
             bs_embed_tooltip(title = "Load scenario: this loads an *.rds file which contains a previously saved scenario specification. WARNING: This will overwrite")
         )
       )
-    ))
-  ),
+    
+    )
+    )),
 
 # Eligibility panel ----------------------------------------------------------
 bsCollapsePanel("Eligibility Criteria",

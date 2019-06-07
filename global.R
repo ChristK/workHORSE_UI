@@ -3,7 +3,7 @@ library(data.table)
 library(ggplot2)
 library(shiny)
 library(shinydashboard)
-# library(shinyBS) # TODO use https://ijlyttle.github.io/bsplus/index.html
+library(shinyBS) # TODO use https://ijlyttle.github.io/bsplus/index.html
 library(bsplus)
 library(shinythemes)
 library(shinyjs)
@@ -11,8 +11,9 @@ library(shinyWidgets)
 library(fst)
 library(DT)
 library(plotly)
-#library(viridis)
-#library(colourpicker)
+library(viridis)
+library(colourpicker)
+library(dichromat)
 # library(promises)
 # library(future)
 library(gamlss)
@@ -69,6 +70,14 @@ mythemeSelector <- function() {
 }
 
 
+
+
+def_col <- viridis(9, option = "D")
+def_col_small <- def_col[c(1, 9, 5, 3, 7, 2, 8, 4, 6)]
+
+#, ceiling(length(def_col)/9)]
+
+
 # Produce scenario tabs 2-9 using scenario 1 as a template if not exist ------
 for (i in 2:9) {
   if (!file.exists(paste0("ui/scenario", i, "_tab.R")) ||
@@ -79,11 +88,15 @@ for (i in 2:9) {
                gsub(
                  "input.level == 1",
                  paste0("input.level == ", i),
-                 gsub("_sc1",  paste0("_sc", i), tt)
-               ))
+                 gsub("_sc1",  paste0("_sc", i), 
+                      gsub("def_col_small\\[\\[1\\]\\]", 
+                           paste0("def_col_small\\[\\[", i, "\\]\\]"), tt)
+              )))
     writeLines(tt, paste0("ui/scenario", i, "_tab.R"))
   }
 }
+
+
 
 # for (i in 2:9) {
 #   if (!file.exists(paste0("server/tooltips_sc", i, ".R")) ||

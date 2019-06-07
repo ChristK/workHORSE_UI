@@ -11,6 +11,16 @@ server = function(input, output, session) {
   })
 
 
+# The choice of scenario's colours
+  colours <- reactive({
+      setnames(transpose(as.data.table(lapply(seq_len(input$scenarios_number_slider), function(i) {
+        c(input[[paste0("col_sc", i)]],
+          input[[paste0("friendly_name_sc", i)]])
+      }))), c("colour", "names"))
+  })
+
+  
+  
   observeEvent(input$scenarios_number_slider, {
 # Render uptake/Px tables -------------------------------------------------
     for (i in seq_len(input$scenarios_number_slider)) {
@@ -51,9 +61,32 @@ server = function(input, output, session) {
                                        readLines(file.path("server", "prev_next_buttons.R")))), local = TRUE
       )$value
     }
+    
+    #Logic for color picker in scenarios
+    #for (i in seq_len(input$scenarios_number_slider)) {
+     # n <- input$scenarios_number_slider
+      #def_col <- viridis(9, option = "D")
+      #def_col_small <- def_col[seq(1, length(def_col))]
+     # tt <- readLines(file.path("ui", "scenario1_tab.R"))
+     # tt2 <- readLines(file.path("ui", "scenario2_tab.R"))
+      
+     # if(input$scenarios_number_slider == 2) {
+       # observeEvent (input$col_sc1 ,{
+         # output$colour_sc1 <- renderUI({
+          #  input$col_sc1 <- first(def_col)
+         # })
+         # })
+       # gsub("def_col_small[[1]]", def_col, tt)
+      #  gsub("def_col_small[[2]]", last(def_col), tt2)
+        #observeEvent (input$col_sc2 ,{
+          #output$colour_sc2 <- renderUI({
+           # input$col_sc2 <- last(def_col)
+         # })
+      #  })
+    #  }
+   # }
   },
   ignoreNULL = FALSE, ignoreInit = FALSE)
-
 
 # Run simulation ----
   out <- eventReactive(input[[paste0("run_simulation_sc", input$scenarios_number_slider)]], {
@@ -91,6 +124,8 @@ observeEvent(input[[paste0("run_simulation_sc", input$scenarios_number_slider)]]
                     selected = "output_panel")
 })
 
+
+
 # Output tab --------------------------------------------------------
   output$most_cost_effective_box <- renderInfoBox({
     infoBox(
@@ -118,6 +153,7 @@ observeEvent(input[[paste0("run_simulation_sc", input$scenarios_number_slider)]]
 
  # user_inputs <- reactive(reactiveValuesToList(input))
 
+  
   source(file.path("server", "output_inputs.R"),  local = TRUE)$value
 
 
