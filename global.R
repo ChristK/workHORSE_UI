@@ -19,11 +19,10 @@ library(dichromat)
 # library(future)
 library(gamlss)
 library(parallel)
-#library(dplyr)
-#library(purrr)
-#library(tidyr)
-#library(mice)
-# remotes::install_github("ChristK/CKutils")
+if (!require(CKutils)) {
+  if (!require(remotes)) install.packages("remotes")
+  remotes::install_github("ChristK/CKutils")
+}
 library(CKutils)
 
 # plan(multiprocess)
@@ -96,10 +95,10 @@ for (i in 2:9) {
                gsub(
                  "input.level == 1",
                  paste0("input.level == ", i),
-                 gsub("_sc1",  paste0("_sc", i), 
-                      gsub("def_col_small\\[\\[1\\]\\]", 
+                 gsub("_sc1",  paste0("_sc", i),
+                      gsub("def_col_small\\[\\[1\\]\\]",
                            paste0("def_col_small\\[\\[", i, "\\]\\]"),
-                      gsub("def_sym\\[\\[1\\]\\]", 
+                      gsub("def_sym\\[\\[1\\]\\]",
                            paste0("def_sym\\[\\[", i, "\\]\\]"), tt)
                       ))))
     writeLines(tt, paste0("ui/scenario", i, "_tab.R"))
@@ -110,9 +109,9 @@ for (i in 2:9) {
     #              "input.level == 1",
     #              paste0("input.level == ", i),
     #              gsub("_sc1",  paste0("_sc", i),
-    #                   gsub("def_sym\\[\\[1\\]\\]", 
+    #                   gsub("def_sym\\[\\[1\\]\\]",
     #                        paste0("def_sym\\[\\[", i, "\\]\\]"), tt2)
-    #                   
+    #
     #              )))
     # writeLines(tt2, paste0("ui/scenario", i, "_tab.R"))
   }
