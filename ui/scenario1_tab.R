@@ -50,6 +50,11 @@ bsCollapsePanel(
         choices = def_sym,
         selected = def_sym[[1]]
       )
+      %>%
+        shinyInput_label_embed(
+          icon("info") %>%
+            bs_embed_tooltip(title = "Please pick a symbol for this scenario. This will be displayed in all model outputs to help for differentiation.")
+        )
       
     ),
     column(

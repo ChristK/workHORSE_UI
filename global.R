@@ -19,6 +19,10 @@ library(dichromat)
 # library(future)
 library(gamlss)
 library(parallel)
+#library(dplyr)
+#library(purrr)
+#library(tidyr)
+#library(mice)
 # remotes::install_github("ChristK/CKutils")
 library(CKutils)
 
@@ -73,7 +77,7 @@ mythemeSelector <- function() {
 
 
 
-def_col <- viridis(9, option = "D")
+def_col <- viridis(16, option = "D")
 def_col_small <- def_col[c(1, 9, 5, 3, 7, 2, 8, 4, 6)]
 
 def_sym <- c("circle-dot", "square", "diamond", "cross", "triangle-up", "pentagon", " star", "hexagon-open-dot", "triangle-down")

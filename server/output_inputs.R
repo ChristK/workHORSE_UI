@@ -177,7 +177,9 @@ output$cep_anim <- renderPlotly({
              y0 = max_y, y1 = -max_y, yref = "y")
       ))
 
-
+# TODO the warning message concerns the colours and symbols that are not added on 
+# every frames of the animation as they should be, they are only added on the first.
+# This needs to be done 3 times, for the 3 graphs with animations
   p <- animation_opts(p, frame = 1000, redraw = FALSE)
   p <- animation_slider(p,
                         currentvalue = list(prefix = "Year: ",
@@ -191,10 +193,12 @@ output$cep_p_ce <- renderPlotly({
 
   
   plot_ly(tt,
-             x = ~year, y = ~V2, color = ~ friendly_name, colors = colours()[names %in% input$inout_scenario_select, colour], type = 'scatter',
-             mode = 'lines', line = list(shape = "spline", smoothing = 1.3)) %>%
-  add_lines(y = 0.8, name = "Decision aid", color = NULL, mode ='lines',
-            line = list(color = "black", dash = "dot")) %>%
+             x = ~year, y = ~V2, type = "scatter", mode = "lines+markers", color = ~ friendly_name, colors = colours()[names %in% input$inout_scenario_select, colour], 
+          symbol = ~ friendly_name, symbols = colours()[names %in% input$inout_scenario_select, symbol], 
+          line = list(shape = "spline", smoothing = 1.3)) %>%
+    
+    add_lines(x = ~year, y = 0.8, name = "Decision aid", color = NULL, symbol = NULL,
+              line = list(color = "black", dash = "dot")) %>%
   layout(
     yaxis = list(title = "Probability of cost-effective policy", range = c(-0.05, 1.05),
                  tickformat = ",.0%"),
@@ -208,9 +212,9 @@ output$cep_p_cs <- renderPlotly({
                      ][, V2 := predict(loess(V1 ~ year)), by = friendly_name]
   
   plot_ly(tt,
-          x = ~year, y = ~V2, color = ~ friendly_name, colors = colours()[names %in% input$inout_scenario_select, colour], type = 'scatter',
-          mode = 'lines', line = list(shape = "spline", smoothing = 1.3)) %>%
-    add_lines(y = 0.8, name = "Decision aid", color = NULL,
+          x = ~year, y = ~V2, type = "scatter", mode = "lines+markers", color = ~ friendly_name, colors = colours()[names %in% input$inout_scenario_select, colour],
+           symbol = ~ friendly_name, symbols = colours()[names %in% input$inout_scenario_select, symbol], line = list(shape = "spline", smoothing = 1.3)) %>%
+    add_lines(x = ~year, y = 0.8, name = "Decision aid", color = NULL, symbol = NULL,
               line = list(color = "black", dash = "dot")) %>%
     layout(
       yaxis = list(title = "Probability of cost-effective policy", range = c(-0.05, 1.05),
@@ -421,16 +425,18 @@ output$equ_p_abs <- renderPlotly({
                    ][, .(prop_if(V1 > 0)), by = .(friendly_name, year)
                      ][, V2 := predict(loess(V1 ~ year)), by = friendly_name]
   
+
   plot_ly(tt,
-          x = ~year, y = ~V2, color = ~ friendly_name, colors = colours()[names %in% input$inout_scenario_select, colour], type = 'scatter',
-          mode = 'lines', line = list(shape = "spline", smoothing = 1.3)) %>%
-    add_lines(y = 0.8, name = "Decision aid", color = NULL,
+          x = ~year, y = ~V2, type = "scatter", mode = "lines+markers", color = ~ friendly_name, colors = colours()[names %in% input$inout_scenario_select, colour],
+           symbol = ~ friendly_name, symbols = colours()[names %in% input$inout_scenario_select, symbol], line = list(shape = "spline", smoothing = 1.3)) %>%
+    add_lines(x = ~year, y = 0.8, name = "Decision aid", color = NULL, symbol = NULL,
               line = list(color = "black", dash = "dot")) %>%
     layout(
       yaxis = list(title = "Probability of equitable policy", range = c(-0.05, 1.05),
                    tickformat = ",.0%"),
       xaxis = list(title = "Year")
     )
+
 })
 
 output$equ_p_rel <- renderPlotly({
@@ -440,15 +446,15 @@ output$equ_p_rel <- renderPlotly({
   
   
   plot_ly(tt,
-          x = ~year, y = ~V2, color = ~ friendly_name, colors = colours()[names %in% input$inout_scenario_select, colour], type = 'scatter',
-          mode = 'lines', line = list(shape = "spline", smoothing = 1.3)) %>%
-    add_lines(y = 0.8, name = "Decision aid", color = NULL,
-              line = list(color = "black", dash = "dot")) %>%
+          x = ~year, y = ~V2, type = "scatter", mode = "lines+markers", color = ~ friendly_name, colors = colours()[names %in% input$inout_scenario_select, colour],
+           symbol = ~ friendly_name, symbols = colours()[names %in% input$inout_scenario_select, symbol], line = list(shape = "spline", smoothing = 1.3)) %>%
+    add_lines(x = ~year, y = 0.8, name = "Decision aid", color = NULL, symbol = NULL,
+                 line = list(color = "black", dash = "dot")) %>%
     layout(
       yaxis = list(title = "Probability of equitable policy", range = c(-0.05, 1.05),
                    tickformat = ",.0%"),
       xaxis = list(title = "Year")
-    )
+    ) 
 })
 
 output$tbl <- renderDT(

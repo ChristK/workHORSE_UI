@@ -13,6 +13,7 @@ server = function(input, output, session) {
 
 # The choice of scenario's colours
 
+
   
   colours <- reactive({
       setnames(transpose(as.data.table(lapply(seq_len(input$scenarios_number_slider), function(i) {
@@ -21,8 +22,11 @@ server = function(input, output, session) {
           input[[paste0("symbol_sc", i)]])
       }))), c("colour", "names", "symbol"))
   })
-
   
+  # firstFrame <- vapplyseq_len(input$scenarios_number_slider), function(i) isTRUE(tr[["frame"]] %in% frameNames[[1]]), logical(1))
+  # input$scenarios_number_slider[firstFrame] <- p$x$frames[[1]]$data
+  
+  #p$x$data <- c(c(p$x$data, colours), NULL)
   
   observeEvent(input$scenarios_number_slider, {
 # Render uptake/Px tables -------------------------------------------------
@@ -133,7 +137,7 @@ observeEvent(input[[paste0("run_simulation_sc", input$scenarios_number_slider)]]
   output$most_cost_effective_box <- renderInfoBox({
     infoBox(
       "Most Cost-Effective", most_cost_effective(out_proc()), icon = icon("pound-sign"),
-      color = "aqua"
+      color = "aqua", fill = FALSE
     )
   })
 
