@@ -53,7 +53,11 @@ tabPanel(
                                "other"
                              ),
                              options = list(`actions-box` = TRUE, `live-search` = TRUE),
-                             multiple = TRUE),
+                             multiple = TRUE)  %>%
+                   shinyInput_label_embed(
+                     icon("info") %>%
+                       bs_embed_tooltip(title = "Please select the parameters you want to apply to the scenarios and see the differences in the tab.")
+                   ),
                  icon = icon("filter")),
         menuItem("Health Economics",
                  sliderInput(
@@ -95,7 +99,7 @@ tabPanel(
     dashboardBody(
       tabItems(
         tabItem(
-          "dashboard",
+          "dashboard", fluidPage(
           fluidRow(
             infoBoxOutput("most_cost_effective_box"),
             infoBoxOutput("most_equitable_box"),
@@ -114,8 +118,17 @@ tabPanel(
               collapsible = FALSE,
               plotlyOutput("equ1")
             )
+          ),
+          fluidRow(
+            box(
+              title = "Explications",
+              solidHeader = TRUE,
+              collapsible = FALSE,
+              width = 12,
+              textOutput("automated_text_descr")
+            )
           )
-        ),
+        )),
         tabItem("cost_effectiveness",
                 fluidRow(
                   box(

@@ -157,6 +157,9 @@ observeEvent(input[[paste0("run_simulation_sc", input$scenarios_number_slider)]]
   })
 
 
+  output$automated_text_descr <- renderText({
+    "The text explaining what happens in the graphs"
+  })
 
  # user_inputs <- reactive(reactiveValuesToList(input))
 

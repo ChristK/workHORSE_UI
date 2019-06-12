@@ -7,7 +7,11 @@ output$out_year_slider <- renderUI({
       input$simulation_period_slider[[2]], 1,
       sep = "",
       ticks = FALSE
-    )
+    ) %>%
+      shinyInput_label_embed(
+        icon("info") %>%
+          bs_embed_tooltip(title = "Please drag the slider to change the end date of the scenarios and see the differences.")
+      )
   )
 })
 
@@ -38,8 +42,12 @@ output$out_scenario_select <- renderUI({
                 choices = c(paste0("Scenario ", seq_len(input$scenarios_number_slider))),
                 selected = c(paste0("Scenario ", seq_len(input$scenarios_number_slider))),
                 options = list(`actions-box` = TRUE, `live-search` = FALSE),
-                multiple = TRUE)
-  )
+                multiple = TRUE) %>%
+      shinyInput_label_embed(
+        icon("info") %>%
+          bs_embed_tooltip(title = "Please select the scenario(s) you want to remove from the graphs.")
+      )
+  ) 
 })
 
 out_proc <- reactive({
