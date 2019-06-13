@@ -160,6 +160,54 @@ observeEvent(input[[paste0("run_simulation_sc", input$scenarios_number_slider)]]
   output$automated_text_descr <- renderText({
     "The text explaining what happens in the graphs"
   })
+  
+output$info_ce_plane <- renderText({
+  "The future explications for this specific graph"
+})
+
+output$info_equ_plane <- renderText({
+  "The future explications for this specific graph"
+})
+
+output$info_ce1_plane <- renderText({
+  "The future explications for this specific graph"
+})
+
+output$info_cepcs_plane <- renderText({
+  "The future explications for this specific graph"
+})
+
+output$info_cepce_plane <- renderText({
+  "The future explications for this specific graph"
+})
+
+output$info_cep_anim_plane <- renderText({
+  "The future explications for this specific graph"
+})
+
+output$info_equ_rel_plane <- renderText({
+  "The future explications for this specific graph"
+})
+
+output$info_equ1_1_plane <- renderText({
+  "The future explications for this specific graph"
+})
+
+output$info_equ_p_rel_plane <- renderText({
+  "The future explications for this specific graph"
+})
+
+output$info_equ_p_abs_plane <- renderText({
+  "The future explications for this specific graph"
+})
+
+output$info_equ_anim_rel_plane <- renderText({
+  "The future explications for this specific graph"
+})
+
+output$info_equ_anim_abs_plane <- renderText({
+  "The future explications for this specific graph"
+})
 
  # user_inputs <- reactive(reactiveValuesToList(input))
 

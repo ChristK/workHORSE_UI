@@ -20,6 +20,13 @@ tabPanel(
         menuItem("Filters",
                  uiOutput("out_year_slider"),
                  uiOutput("out_scenario_select"),
+                 # bs_modal(
+                 #   id = "modal",
+                 #   title = "I'm a modal",
+                 #   size = "large",
+                 #   body = includeMarkdown(system.file("markdown", "modal.md", package = "bsplus"))
+                 # ),
+                 # bs_modal("modal", title = "I'm a modal", trigger = NULL, body = "Yes, I am.", footer = bs_modal_closebutton(label = "Close"), size = "small"),
                  pickerInput(inputId = "out_characteristics_select",
                              label = "Sub-population",
                              choices = list(
@@ -110,12 +117,18 @@ tabPanel(
               title = "Cost-effectiveness plane",
               solidHeader = TRUE,
               collapsible = FALSE,
+              bs_modal(id = "modal_cep", title = "Explications of this Cost-effectiveness plane", body = textOutput("info_ce_plane")),
+              shiny_iconlink() %>%
+              bs_attach_modal(id_modal = "modal_cep"),
               plotlyOutput("cep1")
-            ),
+            ) ,
             box(
               title = "Equity plane",
               solidHeader = TRUE,
               collapsible = FALSE,
+              bs_modal(id = "modal_equ", title = "Explications of this equity plane", body = textOutput("info_equ_plane")),
+              shiny_iconlink() %>%
+              bs_attach_modal(id_modal = "modal_equ"),
               plotlyOutput("equ1")
             )
           ),
@@ -135,6 +148,9 @@ tabPanel(
                     title = "Cost-effectiveness plane",
                     solidHeader = TRUE,
                     collapsible = FALSE,
+                    bs_modal(id = "modal_cep1_1", title = "Explications of this Cost-effectiveness plane", body = textOutput("info_ce1_plane")),
+                    shiny_iconlink() %>%
+                    bs_attach_modal(id_modal = "modal_cep1_1"),
                     plotlyOutput("cep1_1")
                   ),
                   box(
@@ -151,13 +167,20 @@ tabPanel(
                     side = "right",
                     selected = "cost-effective policy",
                     id = "out_cep_p",
-                    tabPanel("cost saving policy", plotlyOutput("cep_p_cs")),
-                    tabPanel("cost-effective policy", plotlyOutput("cep_p_ce"))
+                    tabPanel("cost saving policy", bs_modal(id = "modal_cep_p_cs", title = "Explications of this Cost saving policy plane", body = textOutput("info_cepcs_plane")),
+                             shiny_iconlink() %>%
+                               bs_attach_modal(id_modal = "modal_cep_p_cs"), plotlyOutput("cep_p_cs")),
+                    tabPanel("cost-effective policy", bs_modal(id = "modal_cep_p_ce", title = "Explications of this Cost-effective policy plane", body = textOutput("info_cepce_plane")),
+                             shiny_iconlink() %>%
+                               bs_attach_modal(id_modal = "modal_cep_p_ce"), plotlyOutput("cep_p_ce"))
                   ),
                   box(
                     title = "Cost-effectiveness over time",
                     solidHeader = TRUE,
                     collapsible = FALSE,
+                    bs_modal(id = "modal_cep_anim", title = "Explications of this Cost-effectiveness over time plane", body = textOutput("info_cep_anim_plane")),
+                    shiny_iconlink() %>%
+                    bs_attach_modal(id_modal = "modal_cep_anim"),
                     plotlyOutput("cep_anim")
                   )
                 )),
@@ -168,8 +191,12 @@ tabPanel(
                     side = "right",
                     selected = "absolute health inequalities",
                     id = "out_equ_plane",
-                    tabPanel("relative health inequalities", plotlyOutput("equ_rel")),
-                    tabPanel("absolute health inequalities", plotlyOutput("equ1_1"))
+                    tabPanel("relative health inequalities", bs_modal(id = "modal_equ_rel", title = "Explications of this relative health inequalities plane concerning equity", body = textOutput("info_equ_rel_plane")),
+                             shiny_iconlink() %>%
+                               bs_attach_modal(id_modal = "modal_equ_rel"), plotlyOutput("equ_rel")),
+                    tabPanel("absolute health inequalities", bs_modal(id = "modal_equ1_1", title = "Explications of this absolute health inequalities plane concerning equity", body = textOutput("info_equ1_1_plane")),
+                             shiny_iconlink() %>%
+                               bs_attach_modal(id_modal = "modal_equ1_1"), plotlyOutput("equ1_1"))
                   ),
                   box(
                     title = "Notes",
@@ -185,16 +212,24 @@ tabPanel(
                     side = "right",
                     selected = "absolute health inequalities",
                     id = "out_equ_p",
-                    tabPanel("relative health inequalities", plotlyOutput("equ_p_rel")),
-                    tabPanel("absolute health inequalities", plotlyOutput("equ_p_abs"))
+                    tabPanel("relative health inequalities", bs_modal(id = "modal_equ_p_rel", title = "Explications of this relative health inequalities plane concerning equitable policy", body = textOutput("info_equ_p_rel_plane")),
+                             shiny_iconlink() %>%
+                               bs_attach_modal(id_modal = "modal_equ_p_rel"), plotlyOutput("equ_p_rel")),
+                    tabPanel("absolute health inequalities", bs_modal(id = "modal_equ_p_abs", title = "Explications of this absolute health inequalities plane concerning equitable policy", body = textOutput("info_equ_p_abs_plane")),
+                             shiny_iconlink() %>%
+                               bs_attach_modal(id_modal = "modal_equ_p_abs"), plotlyOutput("equ_p_abs"))
                   ),
                   tabBox(
                     title = "Equity over time",
                     side = "right",
                     selected = "absolute health inequalities",
                     id = "out_equ_anim",
-                    tabPanel("relative health inequalities", plotlyOutput("equ_anim_rel")),
-                    tabPanel("absolute health inequalities", plotlyOutput("equ_anim_abs"))
+                    tabPanel("relative health inequalities", bs_modal(id = "modal_equ_anim_rel", title = "Explications of this relative health inequalities plane concerning equity over time", body = textOutput("info_equ_anim_rel_plane")),
+                             shiny_iconlink() %>%
+                               bs_attach_modal(id_modal = "modal_equ_anim_rel"), plotlyOutput("equ_anim_rel")),
+                    tabPanel("absolute health inequalities", bs_modal(id = "modal_equ_anim_abs", title = "Explications of this absolute health inequalities plane concerning equity over time", body = textOutput("info_equ_anim_abs_plane")),
+                             shiny_iconlink() %>%
+                               bs_attach_modal(id_modal = "modal_equ_anim_abs"), plotlyOutput("equ_anim_abs"))
                   )
                 )
         ),
@@ -212,6 +247,5 @@ tabPanel(
                 "Sub-item 2 tab content"
         )
       )
-      )
-  )
 )
+))

@@ -35,6 +35,7 @@ observe({
        
     })
 
+
 output$out_scenario_select <- renderUI({
   tagList(
     pickerInput(inputId = "inout_scenario_select",
@@ -42,12 +43,12 @@ output$out_scenario_select <- renderUI({
                 choices = c(paste0("Scenario ", seq_len(input$scenarios_number_slider))),
                 selected = c(paste0("Scenario ", seq_len(input$scenarios_number_slider))),
                 options = list(`actions-box` = TRUE, `live-search` = FALSE),
-                multiple = TRUE) %>%
+                multiple = TRUE)    %>%
       shinyInput_label_embed(
         icon("info") %>%
           bs_embed_tooltip(title = "Please select the scenario(s) you want to remove from the graphs.")
       )
-  ) 
+    )
 })
 
 out_proc <- reactive({
@@ -75,8 +76,10 @@ out_proc <- reactive({
   })
 
 
+
 # CE plane
 output$cep1_1 <- output$cep1 <- renderPlotly({
+  
   tt <-       out_proc()[year == max(year), ][, .(
     net_utility_cml = sum(net_utility_cml),
     net_cost_cml    = sum(net_cost_cml)
@@ -88,9 +91,10 @@ output$cep1_1 <- output$cep1 <- renderPlotly({
   max_y <-  max(tt[, max(abs(net_cost_cml))] * 1.2, wtp_thres())
   trng_path <- paste0("M 0 0 L ",  max_x, " ", wtp_thres(), " L ", max_x, " 0 Z")
   
+ 
   # TODO separate this code from this specific graph because it is universal. Move it somewhere it is obviously universal
  # TODO synchronise colours and graphs with the scenario selection on the left side bar
- 
+
   
   p <-
     plot_ly(
@@ -105,8 +109,9 @@ output$cep1_1 <- output$cep1 <- renderPlotly({
       symbol = ~ friendly_name,
       symbols = colours()[names %in% input$inout_scenario_select, symbol],
       showlegend = TRUE
-    )
- 
+    ) 
+
+
   p <-
     layout(
       p,
@@ -127,14 +132,14 @@ output$cep1_1 <- output$cep1 <- renderPlotly({
              layer = "below",
              x0 = 0, x1 = -max_x, xref = "x",
              y0 = max_y, y1 = -max_y, yref = "y")
-        ))
-#suppressWarnings(print(p))
+        )) 
  
   # p <- animation_opts(p, frame = 1000, redraw = FALSE)
   # p <- animation_slider(p,
   #                       currentvalue = list(prefix = "Year: ",
   #                                           font = list(color = "red")))
-})
+
+  })
 
 output$cep_anim <- renderPlotly({
   tt <-       out_proc()[, .(
