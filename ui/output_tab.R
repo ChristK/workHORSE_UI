@@ -20,13 +20,6 @@ tabPanel(
         menuItem("Filters",
                  uiOutput("out_year_slider"),
                  uiOutput("out_scenario_select"),
-                 # bs_modal(
-                 #   id = "modal",
-                 #   title = "I'm a modal",
-                 #   size = "large",
-                 #   body = includeMarkdown(system.file("markdown", "modal.md", package = "bsplus"))
-                 # ),
-                 # bs_modal("modal", title = "I'm a modal", trigger = NULL, body = "Yes, I am.", footer = bs_modal_closebutton(label = "Close"), size = "small"),
                  pickerInput(inputId = "out_characteristics_select",
                              label = "Sub-population",
                              choices = list(
@@ -237,11 +230,19 @@ tabPanel(
                 div(p("Dashboard tab content"))
         ),
         tabItem("subitem1",
-                box(
-                  title = "Detailed results", solidHeader = TRUE,
-                  collapsible = TRUE,
-                  DTOutput('tbl')
-                )
+                  box(
+                    title = "Detailed results", solidHeader = TRUE,
+                    collapsible = TRUE,
+                    column(6, offset = 6, uiOutput("out_columns_select")),
+                   column(12,
+                    DT::dataTableOutput('tbl'),
+                    DT::dataTableOutput('tbl2')
+                   # DT::dataTableOutput('tbl3'),
+                    # uiOutput("display"),
+                    # uiOutput("display2"),
+                    # uiOutput("display3")
+                    ))
+ 
         ),
         tabItem("subitem2",
                 "Sub-item 2 tab content"
@@ -249,3 +250,4 @@ tabPanel(
       )
 )
 ))
+

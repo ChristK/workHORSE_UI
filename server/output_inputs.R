@@ -51,6 +51,7 @@ output$out_scenario_select <- renderUI({
     )
 })
 
+
 out_proc <- reactive({
   # if (!exists("out")) out <- read_fst("./metamodel/out.fst", as.data.table = TRUE)
   # out <- read_fst(file.path("output", "out.fst"), as.data.table = TRUE)
@@ -470,19 +471,152 @@ output$equ_p_rel <- renderPlotly({
     ) 
 })
 
-output$tbl <- renderDT(
-  out_proc(),
-  style = "bootstrap",
-  options = list(scrollX = '400px', scrollY = "350px",
-                 dom = 'lrt'
-  ),
-  filter = list(position = "top"),
-  caption = htmltools::tags$caption(
-    style = 'caption-side: top; text-align: left;',
-    'Table 4: ',
-    htmltools::em('Model outputs')
+ clm <- reactive({ c(input$inout_columns_select) })
+
+# column names to show in datatable
+# columns2show <- input$inout_columns_select
+# # column indexes to hide in datatable
+# columns2hide <- which(!(colnames(out_proc()) %in% input$inout_columns_select))
+ # vchoices <- 1:lenght(ncol(out_proc()))
+ # in_choice <- 1:length(input$inout_columns_select)
+
+output$tbl <- DT::renderDataTable(
+  if(!is.null(input$inout_columns_select)) {
+   datatable(out_proc()[, .SD, .SDcols = input$inout_columns_select],
+    style = "bootstrap",
+    options = list(scrollX = '400px', scrollY = "350px",
+                   dom = 'lrt'),
+    filter = list(position = "top"),
+    caption = htmltools::tags$caption(
+      style = 'caption-side: top; text-align: left;',
+      'Table 4: ',
+      htmltools::em('Model outputs'))
+   )} else { #brand needed for when no columns are selected
+  datatable(out_proc(),
+            style = "bootstrap",
+            options = list(scrollX = '400px', scrollY = "350px",
+                           dom = 'lrt'),
+            filter = list(position = "top"),
+            caption = htmltools::tags$caption(
+              style = 'caption-side: top; text-align: left;',
+              'Table 4: ',
+              htmltools::em('Model outputs'))
   )
+   }
 )
+
+
+  # if (!is.null(input$inout_columns_select)){
+  #   columns <- input$inout_columns_select
+  # }
+
+
+
+# output$display = renderPrint(names(out_proc()))
+# output$display2 = renderPrint(colnames(out_proc()))
+
+# proxy <- DT::dataTableProxy('tbl')
+# 
+# observe({
+#   columns <- match(input$inout_columns_select, col(out_proc()))
+# print(columns)
+# selectColumns(proxy, columns)
+# })
+
+# vchoices <- 1:ncol(out_proc())
+# names(vchoices) <- names(out_proc())
+
+output$out_columns_select <- renderUI({
+  tagList(
+    pickerInput(inputId = "inout_columns_select",
+                label = "Columns",
+                choices = colnames(out_proc()),
+                selected = colnames(out_proc()),
+                options = list(`actions-box` = TRUE, `live-search` = FALSE),
+                multiple = TRUE)    %>%
+      shinyInput_label_embed(
+        icon("info") %>%
+          bs_embed_tooltip(title = "Please select the parameters you want to see in the tab.")
+      )
+  )
+})
+
+
+# observeEvent(input$inout_columns_select,{
+#   cols <- as.numeric(input$inout_columns_select)
+#   if(length(input$inout_columns_select) == 1){
+#     dt <- datatable(DT[, na.omit(input$inout_columns_select)], extensions = 'Select', selection = list(target = "column"))
+#     names(df) <- names(out_proc())[cols]
+#     output$tbl2 = DT::renderDataTable(df)
+#     
+#   }else{
+#     output$tbl2 = DT::renderDataTable(datatable(out_proc()[, na.omit(input$inout_columns_select)]))
+#     
+#   }
+# })
+
+subset_table <- reactive({
+  out <- data.frame(out_proc()[, na.omit(as.integer(input$inout_columns_select)), drop = F])
+      DT::datatable(
+                    out,
+                    rownames = TRUE,
+                    # colnames = TRUE,
+                  colnames(clm()),
+                 #sub <- subset(colnames, select= c(input$inout_columns_select)),
+                options = list(scrollX = '400px', scrollY = "350px", dom = 'lrt'),
+                style = "bootstrap",
+                escape = FALSE,
+                #filter = list(position = "top"),
+                caption = htmltools::tags$caption(
+                    style = 'caption-side: top; text-align: left;',
+                    'Table 4: ',
+                    htmltools::em('Model outputs')
+  ))
+})
+
+#, columnDefs = list(list(visible = FALSE, targets = clm)))
+
+# output$tbl2 <- DT::renderDataTable({
+#   #s_table <- data.table(out_proc()[, na.omit(input$inout_columns_select), drop = F])
+#   # subset_table = data.table(out_proc())
+#   datatable(as.data.frame(subset_table))
+#    #out_proc()[, na.omit(input$inout_columns_select), drop = F]
+#    
+# })
+
+
+#output$display3 = renderPrint(subset_table)
+# observe({
+#   cols <- as.numeric(input$inout_columns_select)
+#   if(length(input$inout_columns_select) == 1){
+#     df <- data.frame(out_proc[,cols])
+#     output$tbl = renderDataTable(df)
+#   } else {
+#     output$tbl <- DT::renderDataTable(
+#       out_proc(),
+#       style = "bootstrap",
+#       options = list(scrollX = '400px', scrollY = "350px",
+#                      dom = 'lrt'),
+#       selection = list(target = 'column'),
+#       filter = list(position = "top"),
+#       caption = htmltools::tags$caption(
+#         style = 'caption-side: top; text-align: left;',
+#         'Table 4: ',
+#         htmltools::em('Model outputs')
+#       ))
+#   }
+#   #updatePickerInput(session, "inout_columns_select", choices = hlp_frienly_names, selected = hlp_frienly_names)
+#   
+# })
+
+# observe(inout_columns_select, {
+#   updateSelectizeInput(session = session, 'inout_columns_select', choices = colnames(out_proc()))
+# })
+
+#output$select_columns = renderPrint(colnames(tbl))
+#output$select_columns_2 = renderPrint(colnames(out_proc()))
+#input$tbl_columns_selected
+
 outputOptions(output, "out_scenario_select", suspendWhenHidden = FALSE)
 outputOptions(output, "out_year_slider", suspendWhenHidden = FALSE)
 # outputOptions(input, "out_discount_slider", suspendWhenHidden = FALSE)
