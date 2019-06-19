@@ -235,12 +235,7 @@ tabPanel(
                     collapsible = TRUE,
                     column(6, offset = 6, uiOutput("out_columns_select")),
                    column(12,
-                    DT::dataTableOutput('tbl'),
-                    DT::dataTableOutput('tbl2')
-                   # DT::dataTableOutput('tbl3'),
-                    # uiOutput("display"),
-                    # uiOutput("display2"),
-                    # uiOutput("display3")
+                    DT::dataTableOutput('tbl')
                     ))
  
         ),

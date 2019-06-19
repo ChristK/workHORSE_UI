@@ -480,22 +480,50 @@ output$equ_p_rel <- renderPlotly({
  # vchoices <- 1:lenght(ncol(out_proc()))
  # in_choice <- 1:length(input$inout_columns_select)
 
+ myModal <- function() {
+   div(id = "test",
+       modalDialog(downloadButton("download","Download the tab as csv"),
+                   br(),
+                   br(),
+                   easyClose = TRUE, title = "Download Table")
+   )
+ }
+ 
+ 
 output$tbl <- DT::renderDataTable(
   if(!is.null(input$inout_columns_select)) {
-   datatable(out_proc()[, .SD, .SDcols = input$inout_columns_select],
+   DT::datatable(
+     out_proc()[, .SD, .SDcols = input$inout_columns_select],
+     #callback = JS("$('div.dwnld').append($('#download'));"),
     style = "bootstrap",
-    options = list(scrollX = '400px', scrollY = "350px",
-                   dom = 'lrt'),
+    extensions = "Buttons",
+    options = list(scrollX = '400px', scrollY = "350px", searching = FALSE,
+                   dom = 'Bfrtip',
+                   pageLength = 100, buttons = list(
+                     "pdf",
+                     list(
+                       extend = "collection",
+                       text = 'download entire dataset',
+                       action = DT::JS("function ( e, dt, node, config ) {
+                                    Shiny.setInputValue('test', true, {priority: 'event'});
+                                    }")
+                     )
+                   )),
     filter = list(position = "top"),
     caption = htmltools::tags$caption(
       style = 'caption-side: top; text-align: left;',
       'Table 4: ',
       htmltools::em('Model outputs'))
    )} else { #brand needed for when no columns are selected
-  datatable(out_proc(),
+  datatable(
+    out_proc(),
+    #callback = JS("$('div.dwnld').append($('#download'));"),
             style = "bootstrap",
-            options = list(scrollX = '400px', scrollY = "350px",
-                           dom = 'lrt'),
+            extensions = "Buttons",
+            options = list(scrollX = '400px', scrollY = "350px", searching = FALSE,
+                           dom = 'Bfrtip',
+                           pageLength = 100, buttons = list("excel")),
+            #class = "display",
             filter = list(position = "top"),
             caption = htmltools::tags$caption(
               style = 'caption-side: top; text-align: left;',
@@ -505,6 +533,19 @@ output$tbl <- DT::renderDataTable(
    }
 )
 
+observeEvent(input$test, {
+  #print("hello")
+  showModal(myModal())
+})
+
+output$download <- downloadHandler(
+  filename = function() {
+    paste("data-", Sys.Date(), ".csv", sep="")
+  },
+  content = function(file) {
+    write.csv(out_proc()[, .SD, .SDcols = input$inout_columns_select], file)
+  }
+)
 
   # if (!is.null(input$inout_columns_select)){
   #   columns <- input$inout_columns_select
