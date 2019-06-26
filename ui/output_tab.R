@@ -6,7 +6,7 @@ tabPanel(
     dashboardSidebar(
       tags$head(
         tags$style(HTML("right-side,
-                      .sidebar-toggle {height: 100vh; overflow: hidden;}
+                        .sidebar-toggle {height: 100vh; overflow: hidden;}
                       " )
         )),
       sidebarMenu(
