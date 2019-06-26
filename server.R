@@ -23,6 +23,8 @@ server = function(input, output, session) {
       }))), c("colour", "names", "symbol"))
   })
   
+  
+  
   # firstFrame <- vapplyseq_len(input$scenarios_number_slider), function(i) isTRUE(tr[["frame"]] %in% frameNames[[1]]), logical(1))
   # input$scenarios_number_slider[firstFrame] <- p$x$frames[[1]]$data
   
