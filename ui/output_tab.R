@@ -122,26 +122,26 @@ tabPanel(
               solidHeader = TRUE,
               collapsible = FALSE,
               fluidRow(
-              column(2,
-              bs_modal(id = "modal_cep", title = "Explications of this Cost-effectiveness plane", body = textOutput("info_ce_plane")),
+              column(1,
+              bs_modal(id = "modal_cep", title = "Explanation of this cost-effectiveness plane", body = textOutput("info_ce_plane")),
               shiny_iconlink() %>%
               bs_attach_modal(id_modal = "modal_cep")),
               #var_out_proc_use_ui("plot1"),
               #var_tt_creation_ui("plot1_tt"),
-              
-              column(12,
+
+              column(10, offset = 1,
               plotlyOutput("cep1")),
-              column(2, offset = 10,
+              column(1, offset = 11,
                      dropdown(
-                       tags$h3("Result display"),
+                       "Result display",
                        switchInput(
                          "res_display",
                          "Mean values",
                          FALSE,
                          onLabel = "Yes",
                          offLabel = "No"),
-                       
-                       style = "unite", status = "primary", size = "sm", 
+
+                       style = "unite", status = "primary", size = "sm",
                        icon = icon("gear", class = "fa-xs"), width = "200px"
                        #tooltip = tooltipOptions(title = "Click to chose the way you want to see the results !")
                      ))

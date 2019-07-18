@@ -211,7 +211,7 @@ most_benefit_cost_ratio <- function(dt) {
 
   names(dt[year == max(year),
            .(
-             bcr_cml = sum(nmb_cml)/2 # TODO: replace 2 with sum(intervention_costs_cml)
+             bcr_cml = sum(nmb_cml)/sum(intervention_cost_cml)
            ), by = .(.id, friendly_name)
            ][, friendly_name[which.max(bcr_cml)], by = .id][, head(sort(counts(V1), decreasing = TRUE), 1)])
 }
@@ -220,7 +220,7 @@ rank_benefit_cost_ratio <- function(dt) {
 
   names(dt[year == max(year),
            .(
-             bcr_cml = sum(nmb_cml)/2 # TODO: replace 2 with sum(intervention_costs_cml)
+             bcr_cml = sum(nmb_cml)/sum(intervention_cost_cml)
            ), by = .(.id, friendly_name)
            ][, friendly_name[which.max(bcr_cml)], by = .id][, sort(counts(V1), decreasing = TRUE)])
 }
@@ -265,12 +265,13 @@ most_equitable_abs <- function(dt) {
 benefit_cost_ratio <- function(dt) {
   dt[year == max(year),
      .(
-       cbr_cml = sum(nmb_cml)/2e4 # TODO: replace 2 with sum(intervention_costs_cml)
+       cbr_cml = sum(nmb_cml)/sum(intervention_cost_cml)
      ), by = .(.id, friendly_name)
      ][, mean(cbr_cml), by = friendly_name][, signif(first(sort(V1, decreasing = TRUE)), 2)]
 }
 
 incr_cost_effect_ratio <- function() " '£X, fill me!' "
+
 tot_net_monet_benef <- function(dt) {
   dt[year == max(year),
      .(
@@ -283,10 +284,14 @@ increase_abs_index_ineq <- function() " 'X, fill me!' "
 social_care_cost_sav <- function() " '£X, fill me!' "
 prod_benef <- function() " '£X, fill me!' "
 inform_care_cost_sav <- function() " '£X, fill me!' "
-# relative_ineq <- function() " 'fill me!' "
-# absolute_ineq <- function() " 'fill me!' "
 
-
+out_proc_mean <- function(dt) {
+  dt[, lapply(.SD, function (x) {
+    if (is.numeric(x)) mean(x) else x
+  }), keyby = .(year, friendly_name), .SDcols = -c("scenario", "qimd", "baseline", "serial_ensemble",
+                                                   "parallel_ensemble", "parallel_ensemble_wt",
+                                                   "cancel_program")]
+}
 
 source(file.path("metamodel", "metamodel_predict.R"), local = TRUE)
 

@@ -19,21 +19,21 @@ output$out_year_slider <- renderUI({
 observe({
       hlp_frienly_names <- list()
       for (i in seq_len(input$scenarios_number_slider)) {
-        
+
         if (!input[[paste0("baseline_sc", i)]] && !input[[paste0("parallel_ensemble_checkbox_sc", i)]]) {
-          
+
          # hlp_frienly_names[link()$n] <- link()$n
            hlp_frienly_names[[input[[paste0("friendly_name_sc", i)]]]] <-  input[[paste0("friendly_name_sc", i)]]
-        
+
         } else if (!input[[paste0("baseline_sc", i)]] && input[[paste0("parallel_ensemble_checkbox_sc", i)]]) {
-          
+
           hlp_frienly_names[[paste0(input[[paste0("friendly_name_sc", i)]], "_ens")]] <-
             paste0(input[[paste0("friendly_name_sc", i)]], "_ens")
           }
       }
 
        updatePickerInput(session, "inout_scenario_select", choices = hlp_frienly_names, selected = hlp_frienly_names)
-       
+
     })
 
 
@@ -60,19 +60,22 @@ out_proc <- reactive({
         friendly_name %in% input$inout_scenario_select,][, `:=` (
           net_utility = net_utility * ((100 - input$out_discount_qalys_slider) / 100) ^ (year - 2017),
           net_cost = net_cost * ((100 - input$out_discount_cost_slider) /
-                                   100) ^ (year - 2017)
+                                   100) ^ (year - 2017),
+          intervention_cost = (annual_coverage_cost + annual_uptake_cost) * ((100 - input$out_discount_cost_slider) /
+                                                                               100) ^ (year - 2017)
         )][,
            `:=` (
-             cpp_chd_cml     = round(cumsum(cpp_chd)),
-             cpp_stroke_cml  = round(cumsum(cpp_stroke)),
-             cpp_t2dm_cml    = round(cumsum(cpp_t2dm)),
-             cpp_af_cml      = round(cumsum(cpp_af)),
-             cpp_lc_cml      = round(cumsum(cpp_lc)),
-             dpp_chd_cml     = round(cumsum(dpp_chd)),
-             dpp_stroke_cml  = round(cumsum(dpp_stroke)),
-             dpp_other_cml   = round(cumsum(dpp_other)),
-             net_utility_cml = cumsum(net_utility),
-             net_cost_cml    = cumsum(net_cost)
+             cpp_chd_cml           = round(cumsum(cpp_chd)),
+             cpp_stroke_cml        = round(cumsum(cpp_stroke)),
+             cpp_t2dm_cml          = round(cumsum(cpp_t2dm)),
+             cpp_af_cml            = round(cumsum(cpp_af)),
+             cpp_lc_cml            = round(cumsum(cpp_lc)),
+             dpp_chd_cml           = round(cumsum(dpp_chd)),
+             dpp_stroke_cml        = round(cumsum(dpp_stroke)),
+             dpp_other_cml         = round(cumsum(dpp_other)),
+             net_utility_cml       = cumsum(net_utility),
+             net_cost_cml          = cumsum(net_cost),
+             intervention_cost_cml = cumsum(intervention_cost)
            ),
            by = .(.id, friendly_name, qimd)][, `:=` (nmb_cml = net_utility_cml * input$out_wtp_box - net_cost_cml)]
   })
@@ -81,7 +84,7 @@ out_proc <- reactive({
 
 # CE plane
 output$cep1_1 <- output$cep1 <- renderPlotly({
-  
+
   tt <-       out_proc()[year == max(year), ][, .(
     net_utility_cml = sum(net_utility_cml),
     net_cost_cml    = sum(net_cost_cml)
@@ -93,15 +96,15 @@ output$cep1_1 <- output$cep1 <- renderPlotly({
   max_y <-  max(tt[, max(abs(net_cost_cml))] * 1.2, wtp_thres())
   trng_path <- paste0("M 0 0 L ",  max_x, " ", wtp_thres(), " L ", max_x, " 0 Z")
 
- 
+
   # TODO separate this code from this specific graph because it is universal. Move it somewhere it is obviously universal
  # TODO synchronise colours and graphs with the scenario selection on the left side bar
 
-  
-  
+
+
   p <-
     plot_ly(
-      tt,
+      tt[, lapply(.SD, mean), keyby = .(friendly_name)],
       x = ~ net_utility_cml,
       y = ~ net_cost_cml,
       color = ~ friendly_name,
@@ -113,11 +116,11 @@ output$cep1_1 <- output$cep1 <- renderPlotly({
       symbols = colours()[names %in% input$inout_scenario_select, symbol],
       showlegend = TRUE
     )
-  
+
   # plt <- callModule(createPlot, "cep1")  <- callModule(createPlot, "cep1_1")
   #callModule(createPlot, "cep1", session = session, data = tt)
-   
-   
+
+
   p <-
     layout(
       p,
@@ -138,8 +141,8 @@ output$cep1_1 <- output$cep1 <- renderPlotly({
              layer = "below",
              x0 = 0, x1 = -max_x, xref = "x",
              y0 = max_y, y1 = -max_y, yref = "y")
-        )) 
- 
+        ))
+
   # p <- animation_opts(p, frame = 1000, redraw = FALSE)
   # p <- animation_slider(p,
   #                       currentvalue = list(prefix = "Year: ",
@@ -153,13 +156,13 @@ output$cep_anim <- renderPlotly({
     net_cost_cml    = sum(net_cost_cml)
   ),
   by = .(.id, friendly_name, year)]
-  
+
   max_x <- tt[, max(abs(net_utility_cml))] * 1.2
   wtp_thres <- reactive(max_x * input$out_wtp_box)
   max_y <-  max(tt[, max(abs(net_cost_cml))] * 1.2, wtp_thres())
   trng_path <- paste0("M 0 0 L ",  max_x, " ", wtp_thres(), " L ", max_x, " 0 Z")
 
-  
+
   p <-
     plot_ly(
       tt,
@@ -196,7 +199,7 @@ output$cep_anim <- renderPlotly({
              y0 = max_y, y1 = -max_y, yref = "y")
       ))
 
-# TODO the warning message concerns the colours and symbols that are not added on 
+# TODO the warning message concerns the colours and symbols that are not added on
 # every frames of the animation as they should be, they are only added on the first.
 # This needs to be done 3 times, for the 3 graphs with animations
   p <- animation_opts(p, frame = 1000, redraw = FALSE)
@@ -210,12 +213,12 @@ output$cep_p_ce <- renderPlotly({
             ][, .(prop_if(V1 > 0)), by = .(friendly_name, year)
               ][, V2 := predict(loess(V1 ~ year)), by = friendly_name]
 
-  
+
   plot_ly(tt,
-             x = ~year, y = ~V2, type = "scatter", mode = "lines+markers", color = ~ friendly_name, colors = colours()[names %in% input$inout_scenario_select, colour], 
-          symbol = ~ friendly_name, symbols = colours()[names %in% input$inout_scenario_select, symbol], 
+             x = ~year, y = ~V2, type = "scatter", mode = "lines+markers", color = ~ friendly_name, colors = colours()[names %in% input$inout_scenario_select, colour],
+          symbol = ~ friendly_name, symbols = colours()[names %in% input$inout_scenario_select, symbol],
           line = list(shape = "spline", smoothing = 1.3)) %>%
-    
+
     add_lines(x = ~year, y = 0.8, name = "Decision aid", color = NULL, symbol = NULL,
               line = list(color = "black", dash = "dot")) %>%
   layout(
@@ -229,7 +232,7 @@ output$cep_p_cs <- renderPlotly({
   tt <- out_proc()[, sum(net_cost_cml), by = .(.id, friendly_name, year)
                    ][, .(prop_if(V1 <= 0)), by = .(friendly_name, year)
                      ][, V2 := predict(loess(V1 ~ year)), by = friendly_name]
-  
+
   plot_ly(tt,
           x = ~year, y = ~V2, type = "scatter", mode = "lines+markers", color = ~ friendly_name, colors = colours()[names %in% input$inout_scenario_select, colour],
            symbol = ~ friendly_name, symbols = colours()[names %in% input$inout_scenario_select, symbol], line = list(shape = "spline", smoothing = 1.3)) %>%
@@ -251,7 +254,7 @@ output$equ1_1 <- output$equ1 <- renderPlotly({
   by = .(.id, friendly_name)]
   max_x <- tt[, max(abs(sei))] * 1.2
   max_y <- tt[, max(abs(nmb_cml))] * 1.2
-  
+
   p <-
     plot_ly(
       tt,
@@ -300,7 +303,7 @@ output$equ_rel <- renderPlotly({
   by = .(.id, friendly_name)]
   max_x <- tt[, max(abs(rei))] * 1.2
   max_y <- tt[, max(abs(nmb_cml))] * 1.2
-  
+
   p <-
     plot_ly(
       tt,
@@ -350,7 +353,7 @@ output$equ_anim_abs <- renderPlotly({
 
   max_x <- tt[, max(abs(sei))] * 1.2
   max_y <- tt[, max(abs(nmb_cml))] * 1.2
-  
+
   p <-
     plot_ly(
       tt,
@@ -399,7 +402,7 @@ output$equ_anim_rel <- renderPlotly({
 
   max_x <- tt[, max(abs(rei))] * 1.2
   max_y <- tt[, max(abs(nmb_cml))] * 1.2
-  
+
   p <-
     plot_ly(
       tt,
@@ -443,7 +446,7 @@ output$equ_p_abs <- renderPlotly({
   tt <- out_proc()[, mean(sei), by = .(.id, friendly_name, year)
                    ][, .(prop_if(V1 > 0)), by = .(friendly_name, year)
                      ][, V2 := predict(loess(V1 ~ year)), by = friendly_name]
-  
+
 
   plot_ly(tt,
           x = ~year, y = ~V2, type = "scatter", mode = "lines+markers", color = ~ friendly_name, colors = colours()[names %in% input$inout_scenario_select, colour],
@@ -462,8 +465,8 @@ output$equ_p_rel <- renderPlotly({
   tt <- out_proc()[, mean(rei), by = .(.id, friendly_name, year)
                    ][, .(prop_if(V1 <= 0)), by = .(friendly_name, year)
                      ][, V2 := predict(loess(V1 ~ year)), by = friendly_name]
-  
-  
+
+
   plot_ly(tt,
           x = ~year, y = ~V2, type = "scatter", mode = "lines+markers", color = ~ friendly_name, colors = colours()[names %in% input$inout_scenario_select, colour],
            symbol = ~ friendly_name, symbols = colours()[names %in% input$inout_scenario_select, symbol], line = list(shape = "spline", smoothing = 1.3)) %>%
@@ -473,7 +476,7 @@ output$equ_p_rel <- renderPlotly({
       yaxis = list(title = "Probability of equitable policy", range = c(-0.05, 1.05),
                    tickformat = ",.0%"),
       xaxis = list(title = "Year")
-    ) 
+    )
 })
 
 
@@ -485,8 +488,8 @@ output$equ_p_rel <- renderPlotly({
                    easyClose = TRUE, title = "Download Table")
    )
  }
- 
- 
+
+
 output$tbl <- DT::renderDataTable(
   if(!is.null(input$inout_columns_select)) {
    DT::datatable(
