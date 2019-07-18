@@ -20,6 +20,7 @@ library(htmltools)
 # library(future)
 library(gamlss)
 library(parallel)
+
 if (!require(CKutils)) {
   if (!require(remotes)) install.packages("remotes")
   remotes::install_github("ChristK/CKutils")
@@ -32,6 +33,7 @@ library(CKutils)
 use_bs_tooltip()
 use_bs_popover()
 
+#source("createPlot.R")
 mythemeSelector <- function() {
   # from https://stackoverflow.com/questions/47827337/prodution-ready-themeselector-for-shiny
   div(
@@ -188,12 +190,24 @@ extract_uptake_table <- function(param_tb, scenario_num) {
 }
 
 most_cost_effective <- function(dt) {
+  
   names(dt[year == max(year),
             .(
               nmb_cml = sum(nmb_cml)
             ), by = .(.id, friendly_name)
             ][, friendly_name[which.max(nmb_cml)], by = .id][, head(sort(counts(V1), decreasing = TRUE), 1)])
 }
+
+rank_cost_effective <- function(dt) {
+  
+    names(dt[year == max(year),
+           .(
+             nmb_cml = sum(nmb_cml)
+           ), by = .(.id, friendly_name)
+           ][, friendly_name[which.max(nmb_cml)], by = .id][, sort(counts(V1), decreasing = TRUE)])
+}
+
+  
 
 most_effective <- function(dt) {
   names(dt[year == max(year),

@@ -1,3 +1,4 @@
+#source("createPlot.R")
 tabPanel(
   title = "Output",
   value = "output_panel",
@@ -17,6 +18,8 @@ tabPanel(
         menuItem("Health Inequalities", icon = icon("balance-scale"), tabName = "equity"
         ),
         menuItem("Effectiveness", icon = icon("heart"), tabName = "effectiveness"
+        ),
+        menuItem("Wider Social Benefits", icon = icon("users"), tabName = "wider_social_benef"
         ),
         menuItem("Detailed Outputs", icon = icon("table"),
                  menuSubItem("Sub-item 1", tabName = "subitem1"),
@@ -115,14 +118,33 @@ tabPanel(
               "html, body {overflow: visible; }")
             ),
             box(
+              
               title = "Cost-effectiveness plane",
               solidHeader = TRUE,
               collapsible = FALSE,
+              fluidRow(
+              column(2,
               bs_modal(id = "modal_cep", title = "Explications of this Cost-effectiveness plane", body = textOutput("info_ce_plane")),
               shiny_iconlink() %>%
-              bs_attach_modal(id_modal = "modal_cep"),
-              plotlyOutput("cep1")
-            ) ,
+              bs_attach_modal(id_modal = "modal_cep")),
+              #var_out_proc_use_ui("plot1"),
+              #var_tt_creation_ui("plot1_tt"),
+              column(2, offset = 10,
+                     dropdownButton(
+                        tags$h3("Result display"),
+                        switchInput(
+                        "res_display",
+                        "Mean values",
+                        FALSE,
+                        onLabel = "Yes",
+                        offLabel = "No",),
+                        circle = FALSE, status = "primary", size = "sm",
+                        icon = icon("gear", class = "fa-xs"), width = "30px"
+                        #tooltip = tooltipOptions(title = "Click to chose the way you want to see the results !")
+              )),
+              column(12,
+              plotlyOutput("cep1"))
+            )) ,
             box(
               title = "Equity plane",
               solidHeader = TRUE,
@@ -139,7 +161,7 @@ tabPanel(
               solidHeader = TRUE,
               collapsible = FALSE,
               width = 12,
-              textOutput("automated_text_descr")
+              uiOutput("automated_text_descr")
             )
           )
         )),
@@ -158,8 +180,7 @@ tabPanel(
                     title = "Notes",
                     solidHeader = TRUE,
                     collapsible = FALSE,
-                    p("Placeholder for dynamic notes"),
-                    p("Please do not use these results for any real-life application")
+                    uiOutput("note_cost_eff")
                   )
                 ),
                 fluidRow(
@@ -203,8 +224,7 @@ tabPanel(
                     title = "Notes",
                     solidHeader = TRUE,
                     collapsible = FALSE,
-                    p("Placeholder for dynamic notes"),
-                    p("Please do not use these results for any real-life application")
+                    uiOutput("note_health_ineq")
                   )
                 ),
                 fluidRow(
@@ -254,7 +274,7 @@ tabPanel(
                     title = "Notes",
                     solidHeader = TRUE,
                     collapsible = FALSE,
-                    p("Notes or future planes/ tabs")
+                    uiOutput("note_effvnss")
                     #p("Please do not use these results for any real-life application")
                   )
                 ),
@@ -284,6 +304,62 @@ tabPanel(
                     #            bs_attach_modal(id_modal = "modal_equ_anim_rel"), plotlyOutput("equ_anim_rel")),
                     tabPanel("A 2nd tab")
                              # , bs_modal(id = "modal_equ_anim_abs", title = "Explications of this absolute health inequalities plane concerning equity over time", body = textOutput("info_equ_anim_abs_plane")),
+                    #          shiny_iconlink() %>%
+                    #            bs_attach_modal(id_modal = "modal_equ_anim_abs"), plotlyOutput("equ_anim_abs"))
+                  )
+                )
+                #div(p("Dashboard tab content"))
+        ),
+        tabItem("wider_social_benef",
+                fluidRow(
+                  tabBox(
+                    title = "1st plane",
+                    side = "right",
+                    selected = "absolute health inequalities",
+                    id = "out_equ_plane",
+                    tabPanel("A 1st tab"),
+                    # , bs_modal(id = "modal_equ_rel", title = "Explications of this relative health inequalities plane concerning equity", body = textOutput("info_equ_rel_plane")),
+                    #          shiny_iconlink() %>%
+                    #            bs_attach_modal(id_modal = "modal_equ_rel"), plotlyOutput("equ_rel")),
+                    tabPanel("A 2nd tab")
+                    # , bs_modal(id = "modal_equ1_1", title = "Explications of this absolute health inequalities plane concerning equity", body = textOutput("info_equ1_1_plane")),
+                    #          shiny_iconlink() %>%
+                    #            bs_attach_modal(id_modal = "modal_equ1_1"), plotlyOutput("equ1_1"))
+                  ),
+                  box(
+                    title = "Notes",
+                    solidHeader = TRUE,
+                    collapsible = FALSE,
+                    uiOutput("note_social_benef")
+                    #p("Please do not use these results for any real-life application")
+                  )
+                ),
+                fluidRow(
+                  tabBox(
+                    title = "2nd plane",
+                    side = "right",
+                    selected = "absolute health inequalities",
+                    id = "out_equ_p",
+                    tabPanel("A 1st tab"),
+                    # , bs_modal(id = "modal_equ_p_rel", title = "Explications of this relative health inequalities plane concerning equitable policy", body = textOutput("info_equ_p_rel_plane")),
+                    #          shiny_iconlink() %>%
+                    #            bs_attach_modal(id_modal = "modal_equ_p_rel"), plotlyOutput("equ_p_rel")),
+                    tabPanel("A 2nd tab")
+                    # , bs_modal(id = "modal_equ_p_abs", title = "Explications of this absolute health inequalities plane concerning equitable policy", body = textOutput("info_equ_p_abs_plane")),
+                    #          shiny_iconlink() %>%
+                    #            bs_attach_modal(id_modal = "modal_equ_p_abs"), plotlyOutput("equ_p_abs"))
+                  ),
+                  tabBox(
+                    title = "3rd plane",
+                    side = "right",
+                    selected = "absolute health inequalities",
+                    id = "out_equ_anim",
+                    tabPanel("A 1st tab"),
+                    # , bs_modal(id = "modal_equ_anim_rel", title = "Explications of this relative health inequalities plane concerning equity over time", body = textOutput("info_equ_anim_rel_plane")),
+                    #          shiny_iconlink() %>%
+                    #            bs_attach_modal(id_modal = "modal_equ_anim_rel"), plotlyOutput("equ_anim_rel")),
+                    tabPanel("A 2nd tab")
+                    # , bs_modal(id = "modal_equ_anim_abs", title = "Explications of this absolute health inequalities plane concerning equity over time", body = textOutput("info_equ_anim_abs_plane")),
                     #          shiny_iconlink() %>%
                     #            bs_attach_modal(id_modal = "modal_equ_anim_abs"), plotlyOutput("equ_anim_abs"))
                   )
