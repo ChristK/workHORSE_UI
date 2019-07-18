@@ -173,17 +173,17 @@ observeEvent(input[[paste0("run_simulation_sc", input$scenarios_number_slider)]]
     # print(rank_cost_effective(out_proc()))
     # for (i in seq_len(input$scenarios_number_slider) ) {
     # print(c(rank_cost_effective(out_proc())[i]))}
-    print(last_rank())
-    print(rank_cost_effective(out_proc()))
-    print(rank_cost_effective(out_proc())[length(rank_cost_effective(out_proc()))])
+    # print(last_rank())
+    # print(rank_cost_effective(out_proc()))
+    # print(rank_cost_effective(out_proc())[length(rank_cost_effective(out_proc()))])
     #print(paste(rank_cost_effective(out_proc()), collapse =","))
     diff_year <- input$inout_year_slider - input$simulation_period_slider[1]
   }
 
    output$automated_text_descr <- renderUI({
      HTML(paste0("With time horizon of ", diff_year()," year/s, starting in year ", input$simulation_period_slider[1], ".", br(), br(),
-     "The most cost effective scenario was ", most_cost_effective(out_proc()), " scenario",
-            " which had a benefit:cost ratio (including the value of health gains) of ", benefit_cost_ratio()," for every £1 spent.", br(), br(),
+     "The most cost effective scenario was ", most_benefit_cost_ratio(out_proc()), " scenario",
+            " which had a benefit:cost ratio (including the value of health gains) of £", benefit_cost_ratio(out_proc())," for every £1 spent.", br(), br(),
      "This scenario had a societal incremental cost effectiveness ratio of ", incr_cost_effect_ratio(),
             " per QALY when compared to the next best scenario. " , br(), br(), "Ranking the scenarios, the most cost effective was ", most_cost_effective(out_proc()), " scenario while the least cost effective was ", last(rank_cost_effective(out_proc())), " scenario."))
    })
@@ -191,8 +191,8 @@ observeEvent(input[[paste0("run_simulation_sc", input$scenarios_number_slider)]]
 
    output$note_cost_eff <- renderUI({
      HTML(paste0("With time horizon of ", diff_year()," year/s, starting in year ", input$simulation_period_slider[1], ": and based on valuing QALYs at ", input$out_wtp_box,
-                 ", the scenario with the greatest societal benefit:cost ratio was ", most_equitable(out_proc()), " scenario which had a benefit: cost ratio of ", benefit_cost_ratio(),
-                 " for every £1 spent and a total net monetary benefit of ", tot_net_monet_benef(), " from a societal perspective.", br(), br(),
+                 ", the scenario with the greatest societal benefit:cost ratio was ", most_equitable(out_proc()), " scenario which had a benefit: cost ratio of ", benefit_cost_ratio(out_proc()),
+                 " for every £1 spent and a total net monetary benefit of £", tot_net_monet_benef(out_proc()), " from a societal perspective.", br(), br(),
                  "This scenario had a societal incremental cost effectiveness ratio of ", incr_cost_effect_ratio(), " per QALY when compared to the next best scenario ", rank_cost_effective(out_proc())[2], " scenario.", br(), br(),
                  "The most cost effective scenario from a healthcare cost perspective was ", most_cost_effective(out_proc()), " scenario which had an incremental cost effectiveness ratio of ", incr_cost_effect_ratio(),
                  " per QALY gained.", br(), "Ranking the scenarios from most to least cost effective, the order was:", br(), br(),
@@ -203,8 +203,8 @@ observeEvent(input[[paste0("run_simulation_sc", input$scenarios_number_slider)]]
    #TODO: update with new functions for absolute and relative equitable
 
    output$note_health_ineq <- renderUI({
-     HTML(paste0(relative_ineq(), " scenario had the biggest impact in terms of reducing relative inequalities, reducing the relative index of inequalities by ", reduce_rel_index_ineq(), ".", br(), br(),
-                 absolute_ineq(), " scenario did the least harm to absolute inequalities, increasing the absolute index of inequalities by ", increase_abs_index_ineq(), "."))
+     HTML(paste0(most_equitable_rel(out_proc()), " scenario had the biggest impact in terms of reducing relative inequalities, reducing the relative index of inequalities by ", reduce_rel_index_ineq(), ".", br(), br(),
+                 last(most_equitable_abs(out_proc())), " scenario did the least harm to absolute inequalities, increasing the absolute index of inequalities by ", increase_abs_index_ineq(), "."))
 
    })
 
@@ -280,5 +280,11 @@ output$info_equ_anim_abs_plane <- renderText({
 
 
   # outputOptions(output, "nrows", suspendWhenHidden = FALSE)
+
+
+last_rank <- function(){
+  lr <- rank_cost_effective(out_proc())[length(rank_cost_effective(out_proc()))]
+  lr <- paste0(" and ", last(rank_cost_effective(out_proc())))
+}
 
 }
