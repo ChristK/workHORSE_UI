@@ -1,5 +1,3 @@
-source("createPlot.R")
-
 server = function(input, output, session) {
 # Dynamic scenario tab addition -------------------------------------------
   output$scenario_tabs <- renderUI({
@@ -14,7 +12,7 @@ server = function(input, output, session) {
 
 
 # Reactive fucntion to choose scenario colours and shapes, and use their value according to their name
- 
+
   colours <- reactive({
       setnames(transpose(as.data.table(lapply(seq_len(input$scenarios_number_slider), function(i) {
         c(input[[paste0("col_sc", i)]],
@@ -22,19 +20,19 @@ server = function(input, output, session) {
           input[[paste0("symbol_sc", i)]])
       }))), c("colour", "names", "symbol"))
   })
-  
-  
-  
+
+
+
   # firstFrame <- vapplyseq_len(input$scenarios_number_slider), function(i) isTRUE(tr[["frame"]] %in% frameNames[[1]]), logical(1))
   # input$scenarios_number_slider[firstFrame] <- p$x$frames[[1]]$data
-  
+
   #p$x$data <- c(c(p$x$data, colours), NULL)
-  
+
   # callModule(module = createPlot, id = "cep1")
- 
-  
-  
-  
+
+
+
+
   observeEvent(input$scenarios_number_slider, {
 # Render uptake/Px tables -------------------------------------------------
     for (i in seq_len(input$scenarios_number_slider)) {
@@ -75,7 +73,7 @@ server = function(input, output, session) {
                                        readLines(file.path("server", "prev_next_buttons.R")))), local = TRUE
       )$value
     }
-    
+
     #Logic for color picker in scenarios
     #for (i in seq_len(input$scenarios_number_slider)) {
      # n <- input$scenarios_number_slider
@@ -83,7 +81,7 @@ server = function(input, output, session) {
       #def_col_small <- def_col[seq(1, length(def_col))]
      # tt <- readLines(file.path("ui", "scenario1_tab.R"))
      # tt2 <- readLines(file.path("ui", "scenario2_tab.R"))
-      
+
      # if(input$scenarios_number_slider == 2) {
        # observeEvent (input$col_sc1 ,{
          # output$colour_sc1 <- renderUI({
@@ -151,7 +149,7 @@ observeEvent(input[[paste0("run_simulation_sc", input$scenarios_number_slider)]]
       "Most Cost-Effective", most_cost_effective(out_proc()), icon = icon("pound-sign"),
       color = "aqua", fill = FALSE
     )
-    
+
   })
 
 
@@ -168,7 +166,7 @@ observeEvent(input[[paste0("run_simulation_sc", input$scenarios_number_slider)]]
       color = "yellow"
     )
   })
-  
+
 
   diff_year <- function() {
     # print(input$ininit_year_slider_sc1)
@@ -181,27 +179,27 @@ observeEvent(input[[paste0("run_simulation_sc", input$scenarios_number_slider)]]
     #print(paste(rank_cost_effective(out_proc()), collapse =","))
     diff_year <- input$inout_year_slider - input$simulation_period_slider[1]
   }
-  
-  
-  
+
+
+
   last_rank <- function(){
     lr <- rank_cost_effective(out_proc())[length(rank_cost_effective(out_proc()))]
     lr <- paste0(" and ", last(rank_cost_effective(out_proc())))
   }
 
-  
-  
+
+
   benefit_cost_ratio <- function() " '£X, fill me!' "
   incr_cost_effect_ratio <- function() " '£X, fill me!' "
   tot_net_monet_benef <- function() " '£X, fill me!' "
   reduce_rel_index_ineq <- function() " 'X, fill me!' "
   increase_abs_index_ineq <- function() " 'X, fill me!' "
   social_care_cost_sav <- function() " '£X, fill me!' "
-  prod_benef <- function() " '£X, fill me!' " 
-  inform_care_cost_sav <- function() " '£X, fill me!' " 
-  relative_ineq <- function() " 'fill me!' " 
-  absolute_ineq <- function() " 'fill me!' " 
-  
+  prod_benef <- function() " '£X, fill me!' "
+  inform_care_cost_sav <- function() " '£X, fill me!' "
+  relative_ineq <- function() " 'fill me!' "
+  absolute_ineq <- function() " 'fill me!' "
+
    output$automated_text_descr <- renderUI({
      HTML(paste0("With time horizon of ", diff_year()," year/s, starting in year ", input$simulation_period_slider[1], ".", br(), br(),
      "The most cost effective scenario was ", most_cost_effective(out_proc()), " scenario",
@@ -210,7 +208,7 @@ observeEvent(input[[paste0("run_simulation_sc", input$scenarios_number_slider)]]
             " per QALY when compared to the next best scenario. " , br(), br(), "Ranking the scenarios, the most cost effective was ", most_cost_effective(out_proc()), " scenario while the least cost effective was ", last(rank_cost_effective(out_proc())), " scenario."))
    })
 
-   
+
    output$note_cost_eff <- renderUI({
      HTML(paste0("With time horizon of ", diff_year()," year/s, starting in year ", input$simulation_period_slider[1], ": and based on valuing QALYs at ", input$out_wtp_box,
                  ", the scenario with the greatest societal benefit:cost ratio was ", most_equitable(out_proc()), " scenario which had a benefit: cost ratio of ", benefit_cost_ratio(),
@@ -218,31 +216,31 @@ observeEvent(input[[paste0("run_simulation_sc", input$scenarios_number_slider)]]
                  "This scenario had a societal incremental cost effectiveness ratio of ", incr_cost_effect_ratio(), " per QALY when compared to the next best scenario ", rank_cost_effective(out_proc())[2], " scenario.", br(), br(),
                  "The most cost effective scenario from a healthcare cost perspective was ", most_cost_effective(out_proc()), " scenario which had an incremental cost effectiveness ratio of ", incr_cost_effect_ratio(),
                  " per QALY gained.", br(), "Ranking the scenarios from most to least cost effective, the order was:", br(), br(),
-                 paste(head(rank_cost_effective(out_proc()), -1), collapse =", "), last_rank() 
+                 paste(head(rank_cost_effective(out_proc()), -1), collapse =", "), last_rank()
      ))
    })
-   
+
    #TODO: update with new functions for absolute and relative equitable
-   
+
    output$note_health_ineq <- renderUI({
      HTML(paste0(relative_ineq(), " scenario had the biggest impact in terms of reducing relative inequalities, reducing the relative index of inequalities by ", reduce_rel_index_ineq(), ".", br(), br(),
                  absolute_ineq(), " scenario did the least harm to absolute inequalities, increasing the absolute index of inequalities by ", increase_abs_index_ineq(), "."))
-     
+
    })
-   
-   
+
+
    output$note_effvnss <- renderUI({
      HTML(paste0("The most effective scenario in terms of disease cases prevented and postponed was ", most_effective(out_proc()), " scenario which prevented '...' total disease cases,
                  made up of '...' cases of CVD, and '...' cases of other diseases"))
    })
-   
-   
+
+
    output$note_social_benef <- renderUI({
      HTML(paste0("As well as healthcare benefits, ", most_equitable(out_proc())," scenario would produce additional social care cost savings of ",
                  social_care_cost_sav(), ", productivity benefits of ", prod_benef(), " (including earnings
 and the value of household productivity) and informal care cost savings of", inform_care_cost_sav(), br()))
    })
-   
+
  output$info_ce_plane <- renderText({
    "Needs to be implemented"
  })
@@ -293,7 +291,7 @@ output$info_equ_anim_abs_plane <- renderText({
 
  # user_inputs <- reactive(reactiveValuesToList(input))
 
-  
+
   source(file.path("server", "output_inputs.R"),  local = TRUE)$value
 
 

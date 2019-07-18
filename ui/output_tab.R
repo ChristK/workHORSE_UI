@@ -1,4 +1,3 @@
-#source("createPlot.R")
 tabPanel(
   title = "Output",
   value = "output_panel",
@@ -118,7 +117,7 @@ tabPanel(
               "html, body {overflow: visible; }")
             ),
             box(
-              
+
               title = "Cost-effectiveness plane",
               solidHeader = TRUE,
               collapsible = FALSE,
@@ -374,7 +373,7 @@ tabPanel(
                    column(12,
                     DT::dataTableOutput('tbl')
                     ))
- 
+
         ),
         tabItem("subitem2",
                 "Sub-item 2 tab content"
