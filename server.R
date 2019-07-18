@@ -180,26 +180,6 @@ observeEvent(input[[paste0("run_simulation_sc", input$scenarios_number_slider)]]
     diff_year <- input$inout_year_slider - input$simulation_period_slider[1]
   }
 
-
-
-  last_rank <- function(){
-    lr <- rank_cost_effective(out_proc())[length(rank_cost_effective(out_proc()))]
-    lr <- paste0(" and ", last(rank_cost_effective(out_proc())))
-  }
-
-
-
-  benefit_cost_ratio <- function() " '£X, fill me!' "
-  incr_cost_effect_ratio <- function() " '£X, fill me!' "
-  tot_net_monet_benef <- function() " '£X, fill me!' "
-  reduce_rel_index_ineq <- function() " 'X, fill me!' "
-  increase_abs_index_ineq <- function() " 'X, fill me!' "
-  social_care_cost_sav <- function() " '£X, fill me!' "
-  prod_benef <- function() " '£X, fill me!' "
-  inform_care_cost_sav <- function() " '£X, fill me!' "
-  relative_ineq <- function() " 'fill me!' "
-  absolute_ineq <- function() " 'fill me!' "
-
    output$automated_text_descr <- renderUI({
      HTML(paste0("With time horizon of ", diff_year()," year/s, starting in year ", input$simulation_period_slider[1], ".", br(), br(),
      "The most cost effective scenario was ", most_cost_effective(out_proc()), " scenario",

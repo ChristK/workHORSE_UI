@@ -207,7 +207,23 @@ rank_cost_effective <- function(dt) {
            ][, friendly_name[which.max(nmb_cml)], by = .id][, sort(counts(V1), decreasing = TRUE)])
 }
 
+most_benefit_cost_ratio <- function(dt) {
 
+  names(dt[year == max(year),
+           .(
+             nmb_cml = sum(nmb_cml)/2 # TODO: replace 2 with sum(intervention_costs_cml)
+           ), by = .(.id, friendly_name)
+           ][, friendly_name[which.max(nmb_cml)], by = .id][, head(sort(counts(V1), decreasing = TRUE), 1)])
+}
+
+rank_benefit_cost_ratio <- function(dt) {
+
+  names(dt[year == max(year),
+           .(
+             nmb_cml = sum(nmb_cml)/2 # TODO: replace 2 with sum(intervention_costs_cml)
+           ), by = .(.id, friendly_name)
+           ][, friendly_name[which.max(nmb_cml)], by = .id][, sort(counts(V1), decreasing = TRUE)])
+}
 
 most_effective <- function(dt) {
   names(dt[year == max(year),
@@ -226,6 +242,40 @@ most_equitable <- function(dt) {
             ), by = .(.id, friendly_name)
             ][, friendly_name[which.max(sei_cml)], by = .id][, head(sort(counts(V1), decreasing = TRUE), 1)])
 
+}
+
+most_equitable_rel <- function(dt) {
+  names(dt[year == max(year),
+           .(
+             rei_cml = mean(rei)
+           ), by = .(.id, friendly_name)
+           ][, friendly_name[which.max(rei_cml)], by = .id][, head(sort(counts(V1), decreasing = TRUE), 1)])
+
+}
+
+most_equitable_abs <- function(dt) {
+  names(dt[year == max(year),
+           .(
+             sei_cml = mean(sei)
+           ), by = .(.id, friendly_name)
+           ][, friendly_name[which.max(sei_cml)], by = .id][, head(sort(counts(V1), decreasing = TRUE), 1)])
+
+}
+
+benefit_cost_ratio <- function() " '£X, fill me!' "
+incr_cost_effect_ratio <- function() " '£X, fill me!' "
+tot_net_monet_benef <- function() " '£X, fill me!' "
+reduce_rel_index_ineq <- function() " 'X, fill me!' "
+increase_abs_index_ineq <- function() " 'X, fill me!' "
+social_care_cost_sav <- function() " '£X, fill me!' "
+prod_benef <- function() " '£X, fill me!' "
+inform_care_cost_sav <- function() " '£X, fill me!' "
+relative_ineq <- function() " 'fill me!' "
+absolute_ineq <- function() " 'fill me!' "
+
+last_rank <- function(){
+  lr <- rank_cost_effective(out_proc())[length(rank_cost_effective(out_proc()))]
+  lr <- paste0(" and ", last(rank_cost_effective(out_proc())))
 }
 
 source(file.path("metamodel", "metamodel_predict.R"), local = TRUE)
