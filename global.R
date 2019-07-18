@@ -19,6 +19,7 @@ library(htmltools)
 # library(promises)
 # library(future)
 library(gamlss)
+library(qs)
 library(parallel)
 if (!require(CKutils)) {
   if (!require(remotes)) install.packages("remotes")

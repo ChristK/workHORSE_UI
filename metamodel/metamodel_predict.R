@@ -1,5 +1,5 @@
 # Predict -----------------------------------------------------------------
-predict_metamodel <- function(parameters = parametrs) {
+predict_metamodel <- function(parameters = parameters) {
 metamodel_input <- read_fst("./metamodel/metamodel_input.fst", as.data.table = TRUE)
 metamodel_input[, `:=` (
   cpp_chd = cpp_chd + 4L,
@@ -12,22 +12,24 @@ metamodel_input[, `:=` (
 all_files <- as.list(
   dir(
     path = "./metamodel",
-    pattern = glob2rx("mod_*.rds"),
+    pattern = glob2rx("mod_*.qs"),
     full.names = TRUE,
     recursive = FALSE
   )
 )
-metamodels <- lapply(all_files, readRDS)
+metamodels <- lapply(all_files, qread)
 all_files <- as.list(
   dir(
     path = "./metamodel",
-    pattern = glob2rx("mod_*.rds"),
+    pattern = glob2rx("mod_*.qs"),
     full.names = FALSE,
     recursive = FALSE
   )
 )
-names(metamodels) <- gsub(".rds$", "", all_files)
-
+names(metamodels) <- gsub(".qs$", "", all_files)
+# lapply(seq_along(metamodels), function(x) {
+#   qsave(metamodels[[x]], paste0("./metamodel/", names(metamodels)[x], ".qs"))
+#   })
 
 # parameters_unf <- setDT(readRDS("./output/input_parameters_unformatted.rds"))
 # parameters     <- setDT(readRDS("./output/input_parameters.rds"))
@@ -79,7 +81,7 @@ tt <- parameters[input_names %like% "smkcess_cost$",   .(scenario, lifestyle_tar
 out <- out[tt, on = "scenario"]
 out[(cancel_program), lifestyle_target_cost := 0]
 
-out <- clone_dt(out, 30L) # increase to 100L
+out <- clone_dt(out, 10L) # increase to 100L
 
 out[, rank_cpp_chd := runif(.N)]
 guess_gamlss(out, metamodels$mod_cpp_chd, metamodel_input, 1)
