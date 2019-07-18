@@ -1,3 +1,4 @@
+
 output$out_year_slider <- renderUI({
   tagList(
     sliderInput(
@@ -91,11 +92,12 @@ output$cep1_1 <- output$cep1 <- renderPlotly({
   wtp_thres <- reactive(max_x * input$out_wtp_box)
   max_y <-  max(tt[, max(abs(net_cost_cml))] * 1.2, wtp_thres())
   trng_path <- paste0("M 0 0 L ",  max_x, " ", wtp_thres(), " L ", max_x, " 0 Z")
-  
+
  
   # TODO separate this code from this specific graph because it is universal. Move it somewhere it is obviously universal
  # TODO synchronise colours and graphs with the scenario selection on the left side bar
 
+  
   
   p <-
     plot_ly(
@@ -110,9 +112,12 @@ output$cep1_1 <- output$cep1 <- renderPlotly({
       symbol = ~ friendly_name,
       symbols = colours()[names %in% input$inout_scenario_select, symbol],
       showlegend = TRUE
-    ) 
-
-
+    )
+  
+  # plt <- callModule(createPlot, "cep1")  <- callModule(createPlot, "cep1_1")
+  #callModule(createPlot, "cep1", session = session, data = tt)
+   
+   
   p <-
     layout(
       p,
@@ -148,7 +153,7 @@ output$cep_anim <- renderPlotly({
     net_cost_cml    = sum(net_cost_cml)
   ),
   by = .(.id, friendly_name, year)]
-
+  
   max_x <- tt[, max(abs(net_utility_cml))] * 1.2
   wtp_thres <- reactive(max_x * input$out_wtp_box)
   max_y <-  max(tt[, max(abs(net_cost_cml))] * 1.2, wtp_thres())

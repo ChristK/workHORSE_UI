@@ -180,6 +180,9 @@ observeEvent(input[[paste0("run_simulation_sc", input$scenarios_number_slider)]]
     diff_year <- input$inout_year_slider - input$simulation_period_slider[1]
   }
 
+  
+# Automated graph explanation text  ------------------------------------------------------
+  
    output$automated_text_descr <- renderUI({
      HTML(paste0("With time horizon of ", diff_year()," year/s, starting in year ", input$simulation_period_slider[1], ".", br(), br(),
      "The most cost effective scenario was ", most_benefit_cost_ratio(out_proc()), " scenario",

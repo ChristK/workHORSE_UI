@@ -128,21 +128,23 @@ tabPanel(
               bs_attach_modal(id_modal = "modal_cep")),
               #var_out_proc_use_ui("plot1"),
               #var_tt_creation_ui("plot1_tt"),
-              column(2, offset = 10,
-                     dropdownButton(
-                        tags$h3("Result display"),
-                        switchInput(
-                        "res_display",
-                        "Mean values",
-                        FALSE,
-                        onLabel = "Yes",
-                        offLabel = "No",),
-                        circle = FALSE, status = "primary", size = "sm",
-                        icon = icon("gear", class = "fa-xs"), width = "30px"
-                        #tooltip = tooltipOptions(title = "Click to chose the way you want to see the results !")
-              )),
+              
               column(12,
-              plotlyOutput("cep1"))
+              plotlyOutput("cep1")),
+              column(2, offset = 10,
+                     dropdown(
+                       tags$h3("Result display"),
+                       switchInput(
+                         "res_display",
+                         "Mean values",
+                         FALSE,
+                         onLabel = "Yes",
+                         offLabel = "No"),
+                       
+                       style = "unite", status = "primary", size = "sm", 
+                       icon = icon("gear", class = "fa-xs"), width = "200px"
+                       #tooltip = tooltipOptions(title = "Click to chose the way you want to see the results !")
+                     ))
             )) ,
             box(
               title = "Equity plane",
