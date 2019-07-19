@@ -131,11 +131,11 @@ tabPanel(
 
               column(10, offset = 1,
               plotlyOutput("cep1")),
-              column(1, offset = 11,
+              column(1, offset = 10,
                      dropdown(
                        "Result display",
                        switchInput(
-                         "res_display",
+                         "res_display_cep1",
                          "Mean values",
                          FALSE,
                          onLabel = "Yes",
@@ -150,10 +150,26 @@ tabPanel(
               title = "Equity plane",
               solidHeader = TRUE,
               collapsible = FALSE,
+              fluidRow(
+              column(1,
               bs_modal(id = "modal_equ", title = "Explications of this equity plane", body = textOutput("info_equ_plane")),
               shiny_iconlink() %>%
-              bs_attach_modal(id_modal = "modal_equ"),
-              plotlyOutput("equ1")
+              bs_attach_modal(id_modal = "modal_equ")),
+              column(10, offset = 1,
+              plotlyOutput("equ1")),
+              column(1, offset = 10,
+                     dropdown(
+                       "Result display",
+                       switchInput(
+                         "res_display_equ1",
+                         "Mean values",
+                         FALSE,
+                         onLabel = "Yes",
+                         offLabel = "No"),
+                       style = "unite", status = "primary", size = "sm", right = TRUE,
+                       icon = icon("gear", class = "fa-xs"), width = "200px" 
+                       #tooltip = tooltipOptions(title = "Click to chose the way you want to see the results !")
+                     ))
             )
           ),
           fluidRow(
@@ -165,18 +181,35 @@ tabPanel(
               uiOutput("automated_text_descr")
             )
           )
-        )),
+        ))),
         tabItem("cost_effectiveness",
                 fluidRow(
                   box(
                     title = "Cost-effectiveness plane",
                     solidHeader = TRUE,
                     collapsible = FALSE,
+                    fluidRow(
+                    column(1,
                     bs_modal(id = "modal_cep1_1", title = "Explications of this Cost-effectiveness plane", body = textOutput("info_ce1_plane")),
                     shiny_iconlink() %>%
-                    bs_attach_modal(id_modal = "modal_cep1_1"),
-                    plotlyOutput("cep1_1")
-                  ),
+                    bs_attach_modal(id_modal = "modal_cep1_1")),
+                    column(10, offset = 1,
+                    plotlyOutput("cep1_1")),
+                    column(1, offset = 10,
+                           dropdown(
+                             "Result display",
+                             switchInput(
+                               "res_display_cep1_1",
+                               "Mean values",
+                               FALSE,
+                               onLabel = "Yes",
+                               offLabel = "No"),
+                             
+                             style = "unite", status = "primary", size = "sm",
+                             icon = icon("gear", class = "fa-xs"), width = "200px"
+                             #tooltip = tooltipOptions(title = "Click to chose the way you want to see the results !")
+                           ))
+                  )),
                   box(
                     title = "Notes",
                     solidHeader = TRUE,
@@ -192,7 +225,9 @@ tabPanel(
                     id = "out_cep_p",
                     tabPanel("cost saving policy", bs_modal(id = "modal_cep_p_cs", title = "Explications of this Cost saving policy plane", body = textOutput("info_cepcs_plane")),
                              shiny_iconlink() %>%
-                               bs_attach_modal(id_modal = "modal_cep_p_cs"), plotlyOutput("cep_p_cs")),
+                               bs_attach_modal(id_modal = "modal_cep_p_cs"),
+                               plotlyOutput("cep_p_cs")
+                             ),
                     tabPanel("cost-effective policy", bs_modal(id = "modal_cep_p_ce", title = "Explications of this Cost-effective policy plane", body = textOutput("info_cepce_plane")),
                              shiny_iconlink() %>%
                                bs_attach_modal(id_modal = "modal_cep_p_ce"), plotlyOutput("cep_p_ce"))
@@ -214,13 +249,49 @@ tabPanel(
                     side = "right",
                     selected = "absolute health inequalities",
                     id = "out_equ_plane",
-                    tabPanel("relative health inequalities", bs_modal(id = "modal_equ_rel", title = "Explications of this relative health inequalities plane concerning equity", body = textOutput("info_equ_rel_plane")),
+                    tabPanel("relative health inequalities",
+                             fluidRow(
+                               column(1,
+                                      bs_modal(id = "modal_equ_rel", title = "Explications of this relative health inequalities plane concerning equity", body = textOutput("info_equ_rel_plane")),
                              shiny_iconlink() %>%
-                               bs_attach_modal(id_modal = "modal_equ_rel"), plotlyOutput("equ_rel")),
-                    tabPanel("absolute health inequalities", bs_modal(id = "modal_equ1_1", title = "Explications of this absolute health inequalities plane concerning equity", body = textOutput("info_equ1_1_plane")),
+                               bs_attach_modal(id_modal = "modal_equ_rel")),
+                             column(10, offset = 1,
+                             plotlyOutput("equ_rel")),
+                             column(1, offset = 10,
+                                    dropdown(
+                                      "Result display",
+                                      switchInput(
+                                        "res_display_equ_rel",
+                                        "Mean values",
+                                        FALSE,
+                                        onLabel = "Yes",
+                                        offLabel = "No"),
+                                      style = "unite", status = "primary", size = "sm",
+                                      icon = icon("gear", class = "fa-xs"), width = "200px"
+                                      #tooltip = tooltipOptions(title = "Click to chose the way you want to see the results !")
+                                    )))),
+                    tabPanel("absolute health inequalities",
+                             fluidRow(
+                               column(1,
+                                      bs_modal(id = "modal_equ1_1", title = "Explications of this absolute health inequalities plane concerning equity", body = textOutput("info_equ1_1_plane")),
                              shiny_iconlink() %>%
-                               bs_attach_modal(id_modal = "modal_equ1_1"), plotlyOutput("equ1_1"))
-                  ),
+                               bs_attach_modal(id_modal = "modal_equ1_1")),
+                             column(10, offset = 1,
+                             plotlyOutput("equ1_1")),
+                             column(1, offset = 10,
+                                    dropdown(
+                                      "Result display",
+                                      switchInput(
+                                        "res_display_equ1_1",
+                                        "Mean values",
+                                        FALSE,
+                                        onLabel = "Yes",
+                                        offLabel = "No"),
+                                      style = "unite", status = "primary", size = "sm",
+                                      icon = icon("gear", class = "fa-xs"), width = "200px"
+                                      #tooltip = tooltipOptions(title = "Click to chose the way you want to see the results !")
+                                    )))
+                  )),
                   box(
                     title = "Notes",
                     solidHeader = TRUE,
