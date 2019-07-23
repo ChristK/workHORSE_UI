@@ -595,6 +595,42 @@ output$equ_p_rel <- renderPlotly({
     )
 })
 
+output$cppy_1 <- renderPlotly({
+  
+  tt <-       out_proc()[year == max(year), ][, .(
+    cpp_chd_cml    = sum(cpp_chd_cml),
+    cpp_stroke_cml = sum(cpp_stroke_cml),
+    cpp_t2dm_cml = sum(cpp_t2dm_cml),
+    cpp_lc_cml = sum(cpp_lc_cml),
+    cpp_af_cml = sum(cpp_af_cml)
+  ),
+  by = .(.id, friendly_name)][, lapply(.SD, mean), keyby = .(friendly_name)]
+  
+  
+  p <- plot_ly(tt, x = ~ friendly_name, y = ~ cpp_chd_cml, name = '', text = 'CPP chd', textposition = 'auto', insidetextfont = list(size=15, color = 'black', opacity = 1), type = 'bar', marker = list(opacity = 0.6, line = list(
+    color = colours()[names %in% input$inout_scenario_select, colour], width = 5))) %>%
+    add_trace(y = ~cpp_stroke_cml, name = "", text = 'CPP stroke', textposition = 'auto', insidetextfont = list(size=15, color = 'black')) %>%
+    add_trace(y = ~cpp_t2dm_cml, name = "", text = 'CPP t2dm', textposition = 'auto', insidetextfont = list(size=15, color = 'black')) %>%
+    add_trace(y = ~cpp_lc_cml, name = "", text = 'CPP lc', textposition = 'auto', insidetextfont = list(size=15, color = 'black')) %>%
+    add_trace(y = ~cpp_af_cml, name = "", text = 'CPP af', textposition = 'auto', insidetextfont = list(size=15, color = 'black')) %>%
+    layout(yaxis = list(title = 'Cases'), showlegend=FALSE, barmode = 'stack')
+  
+})
+
+
+output$dpp_1 <- renderPlotly({
+  
+  tt <-       out_proc()[year == max(year), ][, .(
+    dpp_chd_cml    = sum(dpp_chd_cml)
+  ),
+  by = .(.id, friendly_name)][, lapply(.SD, mean), keyby = .(friendly_name)]
+  
+  
+  plot_ly(tt, x = ~ friendly_name, y = ~ dpp_chd_cml, color = ~friendly_name, colors = colours()[names %in% input$inout_scenario_select, colour], text = 'DPP chd', textposition = 'auto', insidetextfont = list(size=15, color = 'black', opacity = 1), type = 'bar', marker = list(opacity = 0.7)) %>%
+    layout(yaxis = list(title = 'Deaths'), showlegend=FALSE, barmode = 'relative')
+  
+})
+
 
  myModal <- function() {
    div(id = "test",
