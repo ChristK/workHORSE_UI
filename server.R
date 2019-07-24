@@ -1,4 +1,16 @@
 server = function(input, output, session) {
+
+  # restrict friendly names to 32 characters at max
+  shinyjs::runjs("$('#friendly_name_sc1').attr('maxlength',32)")
+  shinyjs::runjs("$('#friendly_name_sc2').attr('maxlength',32)")
+  shinyjs::runjs("$('#friendly_name_sc3').attr('maxlength',32)")
+  shinyjs::runjs("$('#friendly_name_sc4').attr('maxlength',32)")
+  shinyjs::runjs("$('#friendly_name_sc5').attr('maxlength',32)")
+  shinyjs::runjs("$('#friendly_name_sc6').attr('maxlength',32)")
+  shinyjs::runjs("$('#friendly_name_sc7').attr('maxlength',32)")
+  shinyjs::runjs("$('#friendly_name_sc8').attr('maxlength',32)")
+  shinyjs::runjs("$('#friendly_name_sc9').attr('maxlength',32)")
+
 # Dynamic scenario tab addition -------------------------------------------
   output$scenario_tabs <- renderUI({
     Tabs <- as.list(rep(0, input$scenarios_number_slider))
@@ -180,9 +192,9 @@ observeEvent(input[[paste0("run_simulation_sc", input$scenarios_number_slider)]]
     diff_year <- input$inout_year_slider - input$simulation_period_slider[1]
   }
 
-  
+
 # Automated graph explanation text  ------------------------------------------------------
-  
+
    output$automated_text_descr <- renderUI({
      HTML(paste0("With time horizon of ", diff_year()," year/s, starting in year ", input$simulation_period_slider[1], ".", br(), br(),
      "The most cost effective scenario was ", most_benefit_cost_ratio(out_proc()), " scenario",
