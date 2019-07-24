@@ -22,6 +22,7 @@ server = function(input, output, session) {
   })
 
 
+ 
 
 
   # firstFrame <- vapplyseq_len(input$scenarios_number_slider), function(i) isTRUE(tr[["frame"]] %in% frameNames[[1]]), logical(1))
@@ -170,14 +171,6 @@ observeEvent(input[[paste0("run_simulation_sc", input$scenarios_number_slider)]]
 
 
   diff_year <- function() {
-    # print(input$ininit_year_slider_sc1)
-    # print(rank_cost_effective(out_proc()))
-    # for (i in seq_len(input$scenarios_number_slider) ) {
-    # print(c(rank_cost_effective(out_proc())[i]))}
-    # print(last_rank())
-    # print(rank_cost_effective(out_proc()))
-    # print(rank_cost_effective(out_proc())[length(rank_cost_effective(out_proc()))])
-    #print(paste(rank_cost_effective(out_proc()), collapse =","))
     diff_year <- input$inout_year_slider - input$simulation_period_slider[1]
   }
 

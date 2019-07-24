@@ -632,6 +632,85 @@ output$dpp_1 <- renderPlotly({
 })
 
 
+output$dppy_spline <- renderPlotly({
+  tt <-       out_proc()[, sum(dpp_chd_cml), by = .(.id, friendly_name, year)
+                 ][, V2 := predict(loess(V1 ~ year)), by = .(friendly_name)]
+  
+  plot_ly(tt,
+          x = ~year, y = ~V2, type = "scatter", mode = "lines+markers", color = ~ friendly_name, colors = colours()[names %in% input$inout_scenario_select, colour],
+          symbol = ~ friendly_name, symbols = colours()[names %in% input$inout_scenario_select, symbol],
+          line = list(shape = "spline", smoothing = 1.3)) %>%
+    
+    layout(
+      yaxis = list(title = "Number of deaths"),
+      xaxis = list(title = "Years of simulation")
+    )
+})
+
+
+
+
+
+
+
+
+
+
+
+
+modal_novalue <- function() {
+  div(id = "novalue",
+      modalDialog(renderPrint("Please, select a disease"),
+                  br(),
+                  br(),
+                  easyClose = TRUE, title = "Warning message")
+  )
+}
+
+observeEvent(input$novalue, {
+  #print("hello")
+  showModal(modal_novalue())
+})
+
+
+# output$diseases_choice_select <- renderUI({
+# 
+#   if(is.null(input$out_diseases_select)) modal_novalue()
+#   
+#   else
+
+    output$cppy_spline <- renderPlotly({
+  
+  #cpp_choices <- input$inout_diseases_select[]
+
+  
+  tt <-       out_proc()[, .(
+    cpp_chd_cml    = sum(cpp_chd_cml),
+    cpp_stroke_cml = sum(cpp_stroke_cml),
+    cpp_t2dm_cml = sum(cpp_t2dm_cml),
+    cpp_lc_cml = sum(cpp_lc_cml),
+    cpp_af_cml = sum(cpp_af_cml)
+  ), by = .(.id, friendly_name, year)
+                         ][, cpp_all := Reduce("+", mget(input$out_diseases_select))][, V2 := predict(loess(cpp_all ~ year)), by = .(friendly_name)]
+  
+  plot_ly(tt,
+          x = ~year, y = ~V2, type = "scatter", mode = "lines+markers", color = ~ friendly_name, colors = colours()[names %in% input$inout_scenario_select, colour],
+          symbol = ~ friendly_name, symbols = colours()[names %in% input$inout_scenario_select, symbol],
+          line = list(shape = "spline", smoothing = 1.3)) %>%
+    
+    layout(
+      yaxis = list(title = "Number of case-years"),
+      xaxis = list(title = "Years of simulation")
+    )
+  
+  
+})
+ 
+
+
+
+
+
  myModal <- function() {
    div(id = "test",
        modalDialog(downloadButton("download","Download the tab as csv"),

@@ -332,7 +332,7 @@ tabPanel(
                     title = "Prevented or Postponed",
                     side = "right",
                     selected = "Case-years",
-                    id = "out_equ_plane",
+                    id = "out_pp_plane",
                     tabPanel("Deaths",
                      bs_modal(id = "modal_dpp_1", title = "Explications", body = textOutput("info_dpp_1_chart")),
                              shiny_iconlink() %>%
@@ -356,18 +356,53 @@ tabPanel(
                 ),
                 fluidRow(
                   tabBox(
-                    title = "2nd plane",
+                    title = "Prevented or Postponed per year",
                     side = "right",
-                    selected = "absolute health inequalities",
-                    id = "out_equ_p",
-                    tabPanel("A 1st tab"),
-                    # , bs_modal(id = "modal_equ_p_rel", title = "Explications of this relative health inequalities plane concerning equitable policy", body = textOutput("info_equ_p_rel_plane")),
-                    #          shiny_iconlink() %>%
-                    #            bs_attach_modal(id_modal = "modal_equ_p_rel"), plotlyOutput("equ_p_rel")),
-                    tabPanel("A 2nd tab")
-                             # , bs_modal(id = "modal_equ_p_abs", title = "Explications of this absolute health inequalities plane concerning equitable policy", body = textOutput("info_equ_p_abs_plane")),
-                    #          shiny_iconlink() %>%
-                    #            bs_attach_modal(id_modal = "modal_equ_p_abs"), plotlyOutput("equ_p_abs"))
+                    selected = "Case-years",
+                    id = "out_ppy_plane",
+                    tabPanel("Deaths",
+                             
+                                      bs_modal(id = "modal_dppy_spline", title = "Explications", body = textOutput("info_dppy_spline")),
+                             shiny_iconlink() %>%
+                               bs_attach_modal(id_modal = "modal_dppy_spline"), plotlyOutput("dppy_spline")
+                    ),
+                    tabPanel("Case-years",
+                             fluidRow(
+                               column(1,
+                                      bs_modal(id = "modal_cppy_spline", title = "Explications", body = textOutput("info_cppy_spline")),
+                             shiny_iconlink() %>%
+                               bs_attach_modal(id_modal = "modal_cppy_spline")),
+                             column(10, offset = 1,
+                                    #uiOutput("diseases_choice_select")
+                             plotlyOutput("cppy_spline")
+                             ),
+                             column(1, offset = 10,
+                                    dropdown(checkboxGroupButtons(inputId = "out_diseases_select",
+                                                         label = "Diseases",
+                                                         choices = list("Coronary heart disease" = "cpp_chd_cml",
+                                                                        "Stroke" = "cpp_stroke_cml",
+                                                                        "Diabetes" = "cpp_t2dm_cml",
+                                                                        "Lung cancer" = "cpp_lc_cml",
+                                                                        "Atrial fibrillation" = "cpp_af_cml"),
+                                                         selected = list("cpp_chd_cml",
+                                                                         "cpp_stroke_cml",
+                                                                         "cpp_t2dm_cml",
+                                                                         "cpp_lc_cml",
+                                                                         "cpp_af_cml"),
+                                                         size = "xs", direction = "vertical", width = "100px")  
+                                             # %>%
+                                             #   shinyInput_label_embed(
+                                             #     icon("info") %>%
+                                             #       bs_embed_tooltip(title = "Please select the parameters you want to see in the tab.")
+                                             #   )
+                                             ,
+                                      style = "unite", status = "primary", size = "sm", up = TRUE,
+                                      icon = icon("gear", class = "fa-xs"), width = "200px"
+                                      #tooltip = tooltipOptions(title = "Click to chose the way you want to see the results !")
+                                    )))),
+                    tabPanel("Cases", bs_modal(id = "modal_cpp_spline", title = "Explications", body = textOutput("info_cpp_spline")),
+                             shiny_iconlink() %>%
+                               bs_attach_modal(id_modal = "modal_cpp_spline"), plotlyOutput("cpp_spline_1"))
                   ),
                   tabBox(
                     title = "3rd plane",
