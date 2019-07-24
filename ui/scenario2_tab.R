@@ -33,9 +33,10 @@ bsCollapsePanel(
         inputId = "col_sc2",
         label = "Pick a color for the scenario",
         value = def_col_small[[2]],
+        showColour = "background",
         palette = "limited",
         allowedCols = def_col,
-        returnName = TRUE,
+        returnName = FALSE
       )
       %>%
         shinyInput_label_embed(

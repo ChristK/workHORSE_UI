@@ -329,18 +329,22 @@ tabPanel(
         tabItem("effectiveness",
                 fluidRow(
                   tabBox(
-                    title = "1st plane",
+                    title = "Prevented or Postponed",
                     side = "right",
-                    selected = "absolute health inequalities",
+                    selected = "Case-years",
                     id = "out_equ_plane",
-                    tabPanel("A 1st tab"),
-                    # , bs_modal(id = "modal_equ_rel", title = "Explications of this relative health inequalities plane concerning equity", body = textOutput("info_equ_rel_plane")),
-                    #          shiny_iconlink() %>%
-                    #            bs_attach_modal(id_modal = "modal_equ_rel"), plotlyOutput("equ_rel")),
-                    tabPanel("A 2nd tab")
-                    # , bs_modal(id = "modal_equ1_1", title = "Explications of this absolute health inequalities plane concerning equity", body = textOutput("info_equ1_1_plane")),
-                    #          shiny_iconlink() %>%
-                    #            bs_attach_modal(id_modal = "modal_equ1_1"), plotlyOutput("equ1_1"))
+                    tabPanel("Deaths",
+                     bs_modal(id = "modal_dpp_1", title = "Explications", body = textOutput("info_dpp_1_chart")),
+                             shiny_iconlink() %>%
+                               bs_attach_modal(id_modal = "modal_dpp_1"), plotlyOutput("dpp_1")),
+                    tabPanel("Case-years"
+                    , bs_modal(id = "modal_cppy_1", title = "Explications", body = textOutput("info_cppy_1_chart")),
+                             shiny_iconlink() %>%
+                               bs_attach_modal(id_modal = "modal_cppy_1"), plotlyOutput("cppy_1")),
+                    tabPanel("Cases"
+                             , bs_modal(id = "modal_cpp_1", title = "Explications", body = textOutput("info_cpp_1_chart")),
+                             shiny_iconlink() %>%
+                               bs_attach_modal(id_modal = "modal_cpp_1"), plotlyOutput("cpp_1"))
                   ),
                   box(
                     title = "Notes",
