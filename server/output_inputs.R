@@ -33,7 +33,8 @@ observe({
       }
 
        updatePickerInput(session, "inout_scenario_select", choices = hlp_frienly_names, selected = hlp_frienly_names)
-
+       updatePickerInput(session, "inout_scenario_diseases_select", choices = hlp_frienly_names, selected = hlp_frienly_names)
+       
     })
 
 
@@ -649,40 +650,18 @@ output$dppy_spline <- renderPlotly({
 
 
 
-
-
-
-
-
-
-
-
-
-modal_novalue <- function() {
-  div(id = "novalue",
-      modalDialog(renderPrint("Please, select a disease"),
-                  br(),
-                  br(),
-                  easyClose = TRUE, title = "Warning message")
-  )
-}
-
-observeEvent(input$novalue, {
-  #print("hello")
-  showModal(modal_novalue())
-})
-
-
-# output$diseases_choice_select <- renderUI({
-# 
-#   if(is.null(input$out_diseases_select)) modal_novalue()
-#   
-#   else
-
-    output$cppy_spline <- renderPlotly({
+output$cppy_spline <- renderPlotly({
   
-  #cpp_choices <- input$inout_diseases_select[]
-
+      if(is.null(input$out_diseases_select)) {
+        modal_novalue()
+        tt_n <- as.data.table(NULL)
+        plot_ly(tt_n,
+                x = 0, y = 0, type = "scatter", mode = "lines+markers",
+                line = list(shape = "spline", smoothing = 1.3))
+        
+      
+        } else {
+        
   
   tt <-       out_proc()[, .(
     cpp_chd_cml    = sum(cpp_chd_cml),
@@ -693,6 +672,7 @@ observeEvent(input$novalue, {
   ), by = .(.id, friendly_name, year)
                          ][, cpp_all := Reduce("+", mget(input$out_diseases_select))][, V2 := predict(loess(cpp_all ~ year)), by = .(friendly_name)]
   
+  
   plot_ly(tt,
           x = ~year, y = ~V2, type = "scatter", mode = "lines+markers", color = ~ friendly_name, colors = colours()[names %in% input$inout_scenario_select, colour],
           symbol = ~ friendly_name, symbols = colours()[names %in% input$inout_scenario_select, symbol],
@@ -702,12 +682,61 @@ observeEvent(input$novalue, {
       yaxis = list(title = "Number of case-years"),
       xaxis = list(title = "Years of simulation")
     )
-  
-  
+        }
+      
+        
 })
  
+output$out_scenario_disease_select <- renderUI({
+  tagList(
+    pickerInput(inputId = "inout_scenario_diseases_select",
+                label = "Scenario",
+                choices = out_proc()[, unique(friendly_name)],
+                selected = first(out_proc()[, unique(friendly_name)]),
+                options = list(`actions-box` = TRUE, `live-search` = FALSE),
+                multiple = FALSE)    %>%
+      shinyInput_label_embed(
+        icon("info") %>%
+          bs_embed_tooltip(title = "Please select the scenario that you want to analyze.")
+      )
+  )
+})
 
 
+
+
+
+output$cpp_stacked_area <- renderPlotly({
+  scn_sel <- ifelse(length(input$inout_scenario_diseases_select) == 0,
+                    first(out_proc()[, unique(friendly_name)]),
+                    input$inout_scenario_diseases_select)
+  tt <-       out_proc()[, .(cpp_chd_cml    = sum(cpp_chd_cml),
+                     cpp_stroke_cml = sum(cpp_stroke_cml),
+                     cpp_t2dm_cml = sum(cpp_t2dm_cml),
+                     cpp_lc_cml = sum(cpp_lc_cml),
+                     cpp_af_cml = sum(cpp_af_cml)), 
+                 by = .(friendly_name, year) # TODO by .id and take the median 
+                 ][friendly_name == scn_sel,
+                   c("cpp_chd_cml", "cpp_stroke_cml",
+                     "cpp_t2dm_cml", "cpp_lc_cml", "cpp_af_cml") := .(
+                       predict(loess(cpp_chd_cml ~ year)),
+                       predict(loess(cpp_stroke_cml ~ year)),
+                       predict(loess(cpp_t2dm_cml ~ year)),
+                       predict(loess(cpp_lc_cml ~ year)),
+                       predict(loess(cpp_af_cml ~ year)))]
+  
+  
+  plot_ly(tt, x = ~year, y = ~cpp_chd_cml, name = 'CHD', type = 'scatter', mode = 'none', stackgroup = 'one', fillcolor = '#F5FF8D') %>%
+    add_trace(y = ~cpp_stroke_cml, name = 'Stroke', fillcolor = '#50CB86') %>%
+    add_trace(y = ~cpp_t2dm_cml, name = 'T2 diabete', fillcolor = '#4C74C9') %>%
+    add_trace(y = ~cpp_lc_cml, name = 'LC', fillcolor = '#700961') %>%
+    add_trace(y = ~cpp_af_cml, name = 'AF', fillcolor = '#312F44') %>%
+    layout(xaxis = list(title = "Years",
+                        showgrid = FALSE),
+           yaxis = list(title = "Number of diseases",
+                        showgrid = FALSE))
+  
+})
 
 
 

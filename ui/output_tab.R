@@ -214,6 +214,7 @@ tabPanel(
                     title = "Notes",
                     solidHeader = TRUE,
                     collapsible = FALSE,
+                    height = 505,
                     uiOutput("note_cost_eff")
                   )
                 ),
@@ -296,6 +297,7 @@ tabPanel(
                     title = "Notes",
                     solidHeader = TRUE,
                     collapsible = FALSE,
+                    height = 540,
                     uiOutput("note_health_ineq")
                   )
                 ),
@@ -350,6 +352,7 @@ tabPanel(
                     title = "Notes",
                     solidHeader = TRUE,
                     collapsible = FALSE,
+                    height = 525,
                     uiOutput("note_effvnss")
                     #p("Please do not use these results for any real-life application")
                   )
@@ -373,7 +376,6 @@ tabPanel(
                              shiny_iconlink() %>%
                                bs_attach_modal(id_modal = "modal_cppy_spline")),
                              column(10, offset = 1,
-                                    #uiOutput("diseases_choice_select")
                              plotlyOutput("cppy_spline")
                              ),
                              column(1, offset = 10,
@@ -390,11 +392,7 @@ tabPanel(
                                                                          "cpp_lc_cml",
                                                                          "cpp_af_cml"),
                                                          size = "xs", direction = "vertical", width = "100px")  
-                                             # %>%
-                                             #   shinyInput_label_embed(
-                                             #     icon("info") %>%
-                                             #       bs_embed_tooltip(title = "Please select the parameters you want to see in the tab.")
-                                             #   )
+                                             
                                              ,
                                       style = "unite", status = "primary", size = "sm", up = TRUE,
                                       icon = icon("gear", class = "fa-xs"), width = "200px"
@@ -405,22 +403,32 @@ tabPanel(
                                bs_attach_modal(id_modal = "modal_cpp_spline"), plotlyOutput("cpp_spline_1"))
                   ),
                   tabBox(
-                    title = "3rd plane",
+                    title = "Prevented or Postponed per year",
                     side = "right",
-                    selected = "absolute health inequalities",
-                    id = "out_equ_anim",
-                    tabPanel("A 1st tab"),
-                    # , bs_modal(id = "modal_equ_anim_rel", title = "Explications of this relative health inequalities plane concerning equity over time", body = textOutput("info_equ_anim_rel_plane")),
-                    #          shiny_iconlink() %>%
-                    #            bs_attach_modal(id_modal = "modal_equ_anim_rel"), plotlyOutput("equ_anim_rel")),
-                    tabPanel("A 2nd tab")
-                             # , bs_modal(id = "modal_equ_anim_abs", title = "Explications of this absolute health inequalities plane concerning equity over time", body = textOutput("info_equ_anim_abs_plane")),
-                    #          shiny_iconlink() %>%
-                    #            bs_attach_modal(id_modal = "modal_equ_anim_abs"), plotlyOutput("equ_anim_abs"))
-                  )
+                    selected = "Case-years",
+                    id = "case_years_staked_graph",
+                    tabPanel("Case-years",
+                             fluidRow(
+                               column(1,
+                                      bs_modal(id = "modal_case_years", title = "Explications", body = textOutput("info_case_years_stack")),
+                             shiny_iconlink() %>%
+                               bs_attach_modal(id_modal = "modal_case_year")),
+                             column(10, offset = 1,
+                             plotlyOutput("cpp_stacked_area")),
+                             column(1, offset = 10,
+                                    dropdown(uiOutput("out_scenario_disease_select"),
+                                             style = "unite", status = "primary", size = "sm", right = TRUE, up = TRUE,
+                                             icon = icon("gear", class = "fa-xs"), width = "200px"
+                                    )))
+                             
+                  ),
+                  tabPanel("Cases")
+                           # , bs_modal(id = "modal_cpp_1", title = "Explications", body = textOutput("info_cpp_1_chart")),
+                           # shiny_iconlink() %>%
+                           #   bs_attach_modal(id_modal = "modal_cpp_1"), plotlyOutput("cpp_1"))
+                  
                 )
-                #div(p("Dashboard tab content"))
-        ),
+        )),
         tabItem("wider_social_benef",
                 fluidRow(
                   tabBox(
