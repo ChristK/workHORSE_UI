@@ -653,7 +653,6 @@ output$dppy_spline <- renderPlotly({
 output$cppy_spline <- renderPlotly({
   
       if(is.null(input$out_diseases_select)) {
-        modal_novalue()
         tt_n <- as.data.table(NULL)
         plot_ly(tt_n,
                 x = 0, y = 0, type = "scatter", mode = "lines+markers",
