@@ -24,7 +24,7 @@ server = function(input, output, session) {
   })
 
 
-# Reactive fucntion to choose scenario colours and shapes, and use their value according to their name
+# Reactive function to choose scenario colours and shapes, and use their value according to their name
 
   colours <- reactive({
       setnames(transpose(as.data.table(lapply(seq_len(input$scenarios_number_slider), function(i) {

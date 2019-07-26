@@ -723,7 +723,7 @@ output$cpp_stacked_area <- renderPlotly({
                        predict(loess(cpp_stroke_cml ~ year)),
                        predict(loess(cpp_t2dm_cml ~ year)),
                        predict(loess(cpp_lc_cml ~ year)),
-                       predict(loess(cpp_af_cml ~ year)))]
+                       predict(loess(cpp_af_cml ~ year))), by = .(friendly_name)]
   
   
   plot_ly(tt, x = ~year, y = ~cpp_chd_cml, name = 'CHD', type = 'scatter', mode = 'none', stackgroup = 'one', fillcolor = '#F5FF8D') %>%
@@ -731,7 +731,8 @@ output$cpp_stacked_area <- renderPlotly({
     add_trace(y = ~cpp_t2dm_cml, name = 'T2 diabete', fillcolor = '#4C74C9') %>%
     add_trace(y = ~cpp_lc_cml, name = 'LC', fillcolor = '#700961') %>%
     add_trace(y = ~cpp_af_cml, name = 'AF', fillcolor = '#312F44') %>%
-    layout(xaxis = list(title = "Years",
+    layout(title = scn_sel,
+           xaxis = list(title = "Years",
                         showgrid = FALSE),
            yaxis = list(title = "Number of diseases",
                         showgrid = FALSE))
